@@ -1,0 +1,102 @@
+{{>/layout/main-header}}
+
+<style>
+    .ql-editor {
+        min-height: 40vh;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
+
+
+<div class="container">
+
+    <form id="hello" action="/s/post" method="get" enctype="multipart/form-data"
+          onsubmit="return getQuill()">
+        <div class="form-group">
+            <select class="form-control" name="categoryId">
+
+                <option value="1">카테고리를 선택하세요</option>
+                <option value="2">자바</option>
+                <option value="3">스프링</option>
+                <option value="4">도커</option>
+
+            </select>
+        </div>
+        <input type="text" placeholder="Enter Title" name="title" class="form-control">
+
+
+        <div id="toolbar-container">
+                <span class="ql-formats">
+                    <select class="ql-font"></select>
+                    <select class="ql-size"></select>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                </span>
+            <span class="ql-formats">
+                    <select class="ql-color"></select>
+                    <select class="ql-background"></select>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-script" value="sub"></button>
+                    <button class="ql-script" value="super"></button>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-header" value="1"></button>
+                    <button class="ql-header" value="2"></button>
+                    <button class="ql-blockquote"></button>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-indent" value="-1"></button>
+                    <button class="ql-indent" value="+1"></button>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-direction" value="rtl"></button>
+                    <select class="ql-align"></select>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-link"></button>
+                    <button class="ql-image"></button>
+                    <button class="ql-video"></button>
+                </span>
+            <span class="ql-formats">
+                    <button class="ql-clean"></button>
+                </span>
+        </div>
+
+        <div id="editor-container"></div>
+        <textarea name="content" id="content">
+
+            </textarea>
+        <div class="form-control d-flex justify-content-end">
+            <div>섬네일 사진 등록 : <input type="file" name="thumnailFile"></div>
+        </div>
+        <button type="submit" class="my_active_btn">글쓰기 등록</button>
+    </form>
+    <br />
+
+</div>
+
+
+<script>
+    var quill = new Quill('#editorContainer', {
+        modules: {
+            formula: true,
+            syntax: true,
+            toolbar: '#toolbarContainer'
+        },
+        placeholder: '게시물을 작성해주세요.',
+        theme: 'snow'
+    });
+
+    // 퀼 에디터 끝
+
+</script>
+
+
+{{>/layout/footer}}
