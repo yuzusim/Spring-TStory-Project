@@ -19,16 +19,18 @@ public class User {
 
     private String username;
     private String password;
+    private String email;
     //    private Boolean emailConfirm;  //이메일 인증 여부
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Builder
-    public User(Integer id, String username, String password, LocalDateTime createdAt) {
+    public User(Integer id, String username, String password, String email, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.createdAt = createdAt;
     }
 }
