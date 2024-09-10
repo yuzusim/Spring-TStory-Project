@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.metacoding.blogv3._core.exception.ApiException400;
+import site.metacoding.blogv3._core.exception.Exception401;
 
 import java.util.Optional;
 
@@ -13,6 +14,15 @@ public class UserService {
 
     private final UserJPARepository userJPARepo;
     //private final EmailUtil emailUtil;
+
+
+
+    // 조회라 트랜젝션 안 붙여도 됨!
+    public User login(UserRequest.LoginDTO reqDTO){
+        User sessionUser = userJPARepo.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
+                .orElseThrow(() -> new Exception401("아이디 혹은 비밀번호를 확인해주세요.")); // orElseThrow 값이 null이면 이라는 뜻
+        return sessionUser; // 세션에 저장
+    }
 
     @Transactional // userJPARepository 가 들고 있으면 안돼!! 한번에 여러개를 할 수 있으니까 서비스에서 통으로 관리해야 함
     public User join(UserRequest.JoinDTO reqDTO){

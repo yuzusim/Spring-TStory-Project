@@ -23,6 +23,7 @@ public class UserController {
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO){
         User sessionUser = userService.join(reqDTO);
+
         // 회원가입 후 바로 로그인
         session.setAttribute("sessionUser", sessionUser);
         //return ResponseEntity.ok(new ApiUtil<>(200));
@@ -35,6 +36,13 @@ public class UserController {
         return "user/joinForm";
     }
 
+
+    @PostMapping("/login")
+    public String login(UserRequest.LoginDTO reqDTO) {
+        User sessionUser = userService.login(reqDTO);
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
+    }
 
     @GetMapping("/login-form")
     public String loginForm() {

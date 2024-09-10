@@ -7,6 +7,27 @@ import lombok.Data;
 
 public class UserRequest {
 
+    //회원정보수정
+    @Data
+    public static class UpdateDTO {
+        @NotEmpty(message = "비밀번호를 입력해주세요.")
+        @Size(min = 4, max = 20, message = "비밀번호는 4글자 이상, 20글자 이하여야 합니다.")
+        private String password;
+        @NotEmpty(message = "비밀번호를 입력해주세요.")
+        @Size(min = 4, max = 20, message = "비밀번호는 4글자 이상, 20글자 이하여야 합니다.")
+        private String newPassword;
+    }
+
+    //로그인
+    @Data
+    public static class LoginDTO{
+        @NotEmpty(message = "아이디를 입력해주세요.")
+        private String username;
+        @NotEmpty(message = "비밀번호를 입력해주세요.")
+        private String password;
+    }
+
+    //회원가입
     @Data
     public static class JoinDTO{
         @NotEmpty(message = "아이디를 입력해주세요.")
