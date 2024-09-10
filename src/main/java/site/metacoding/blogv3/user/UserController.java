@@ -12,20 +12,20 @@ public class UserController {
     private final HttpSession session;
     private final UserService userService;
 
+    // 회원가입
     @GetMapping("/join-form")
     public String joinForm() {
         return "user/joinForm";
     }
 
+    // 로그인
     @GetMapping("/login-form")
     public String loginForm() {
-
         return "user/loginForm";
     }
 
     @GetMapping("/user/password-reset-form")
     public String passwordResetForm() {
-
         return "user/passwordResetForm";
     }
 
@@ -33,6 +33,13 @@ public class UserController {
     public String updateForm() {
 
         return "user/updateForm";
+    }
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout() {
+        session.invalidate();
+        return "redirect:/";
     }
 
 }
