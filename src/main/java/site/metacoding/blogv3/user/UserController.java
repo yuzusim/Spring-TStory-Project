@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import site.metacoding.blogv3._core.util.ApiUtil;
 
@@ -22,7 +23,7 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    public String join(UserRequest.JoinDTO reqDTO){
+    public String join(UserRequest.JoinDTO reqDTO) {
         User sessionUser = userService.join(reqDTO);
 
         // 회원가입 후 바로 로그인
@@ -65,6 +66,16 @@ public class UserController {
 
         return "user/updateForm";
     }
+
+    @PutMapping("/user/update")
+    public ResponseEntity<?> update(@RequestBody UserRequest.UpdateDTO reqDTO) {
+        System.out.println("비번 확인용 = " + reqDTO);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        userService.userUpdate(sessionUser.getId(), reqDTO);
+
+        return ResponseEntity.ok(new ApiUtil<>(true));
+    }
+
 
     //로그아웃
     @GetMapping("/logout")

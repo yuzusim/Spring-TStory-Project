@@ -17,7 +17,7 @@ public class UserService {
     //private final EmailUtil emailUtil;
 
     //로그인(조회라 트랜젝션 안 붙여도 됨!)
-    public User login(UserRequest.LoginDTO reqDTO){
+    public User login(UserRequest.LoginDTO reqDTO) {
         User sessionUser = userJPARepo.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
                 .orElseThrow(() -> new Exception401("아이디 혹은 비밀번호를 확인해주세요.")); // orElseThrow 값이 null이면 이라는 뜻
         return sessionUser; // 세션에 저장
@@ -25,7 +25,7 @@ public class UserService {
 
     //회원가입
     @Transactional
-    public User join(UserRequest.JoinDTO reqDTO){
+    public User join(UserRequest.JoinDTO reqDTO) {
         // 유저네임 중복검사(서비스 체크) - DB 연결이 필요함
         Optional<User> userOP = userJPARepo.findByUsername(reqDTO.getUsername());
 
@@ -36,7 +36,7 @@ public class UserService {
 
         // 아닌 경우 정상적으로 저장
         User user = userJPARepo.save(reqDTO.toEntity());
-        return user; 
+        return user;
     }
 
     //회원정보수정(값 뿌리기 조회)
@@ -45,8 +45,27 @@ public class UserService {
                 .orElseThrow(() -> new ApiException404("회원 정보가 존재하지 않습니다."));
 
         return new UserResponse.UpdateDTO(user.getUsername(), user.getEmail());
-
     }
 
+    @Transactional
+    public void userUpdate(Integer sessionUserId, UserRequest.UpdateDTO reqDTO) {
+        //먼저 조회
+        User user = userJPARepo.findById(sessionUserId)
+                //.orElseThrow(() -> new ApiException404("회원 정보가 존재하지 않습니다."));
+//                .orElseThrow(() -> new RuntimeException());
+
+                .orElseThrow(() -> new ApiException404("존재하지 않는 회원입니다."));
+        System.out.println("user = " + user);
+
+        if (reqDTO.getNewPassword().equals(user.getPassword())) {
+            throw new RuntimeException("동일한 비밀번호로는 변경할 수 없습니다.");
+        }
+
+        if (!reqDTO.getPassword().equals(user.getPassword())) {
+            throw new RuntimeException("기존 비밀번호가 일치하지 않습니다.");
+        }
+
+        user.setPassword(reqDTO.getNewPassword());
+    }
 
 }
