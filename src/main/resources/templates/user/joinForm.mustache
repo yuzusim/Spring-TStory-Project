@@ -5,10 +5,8 @@
         <div class="my_auth_form_box">
             <div class="my_auth_form_box_title">JSotry</div>
             <div class="my_error_box my_hidden">
-
             </div>
-            <!--method="post"-->
-            <form action="/join" method="post">
+            <form action="/join" method="post" id="joinForm">
                 <input id="username" class="my_auth_form_box_input" type="text" name="username" placeholder="유저네임"
                        maxlength="20" value="ssar1" required />
                 <input id="password" class="my_auth_form_box_input" type="password" name="password" placeholder="비밀번호"
@@ -68,6 +66,37 @@
             });
         }
     });
+
+    // 이메일 인증 안되면 막기 + 비번이 다르면 form 제출 못하게 막아놓음
+    $("#joinForm").on("submit", function (e) {
+
+        // 패스워드 유효성 검사
+        let password = $("#password").val();
+        //console.log("패스워드 = " + password);
+
+        let confirmPassword = $("#same-password").val();
+        //console.log("확인용 = " + confirmPassword);
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+
+            swal({
+                text: "비밀번호를 확인해주세요",
+                icon: "warning",
+                button: "확인"
+            });
+
+        } else if (confirmPassword === "") {
+            e.preventDefault();
+
+            swal({
+                text: "비밀번호를 확인해주세요",
+                icon: "warning",
+                button: "확인"
+            });
+        }
+    });
+
 
 </script>
 <!-- 비밀번호 동일 체크 끝-->
