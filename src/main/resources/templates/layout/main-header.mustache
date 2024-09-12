@@ -29,41 +29,42 @@
 
 <body>
 
-    <input type="hidden" id="principal-id" value="" />
+<input type="hidden" id="principal-id" value=""/>
 
-    <nav class="navbar navbar-expand-sm my_navbar">
+<nav class="navbar navbar-expand-sm my_navbar">
 
-        <a href="/">
-            <svg class="my_sm_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408.4 408.4">
-                <g>
-                    <circle class="cls-1" cx="58.18" cy="58.18" r="58.18" />
-                    <circle class="cls-1" cx="204.2" cy="58.18" r="58.18" />
-                    <circle class="cls-1" cx="204.2" cy="204.2" r="58.18" />
-                    <circle class="cls-1" cx="204.2" cy="350.22" r="58.18" />
-                    <circle class="cls-1" cx="350.22" cy="58.18" r="58.18" />
-                </g>
-            </svg>
-        </a>
-
+    <a href="/">
+        <svg class="my_sm_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408.4 408.4">
+            <g>
+                <circle class="cls-1" cx="58.18" cy="58.18" r="58.18"/>
+                <circle class="cls-1" cx="204.2" cy="58.18" r="58.18"/>
+                <circle class="cls-1" cx="204.2" cy="204.2" r="58.18"/>
+                <circle class="cls-1" cx="204.2" cy="350.22" r="58.18"/>
+                <circle class="cls-1" cx="350.22" cy="58.18" r="58.18"/>
+            </g>
+        </svg>
+    </a>
+    {{#sessionUser}}
         <div class="dropdown dropleft">
-
-
             <div data-toggle="dropdown">
                 <img id="profile-img-btn" src="/images/dog.jpg"
-                    class="my_profile_rounded_img_btn dropdown-toggle">
+                     class="my_profile_rounded_img_btn dropdown-toggle">
             </div>
-
+            <!--메뉴-->
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/user/post">내블로그</a>
-                <a class="dropdown-item" href="/s/user">계정관리</a>
+                <a class="dropdown-item" href="/user/update-form">계정관리</a>
                 <a class="dropdown-item" href="/s/category/writeForm">카테고리관리</a>
                 <a class="dropdown-item" href="/logout">로그아웃</a>
             </div>
         </div>
+    {{/sessionUser}}
 
+    {{^sessionUser}}
         <div>
             <a class="my_main_start_btn" href="/login-form">시작하기</a>
         </div>
+    {{/sessionUser}}
 
     </nav>
     <br>

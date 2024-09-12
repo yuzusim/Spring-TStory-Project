@@ -1,5 +1,6 @@
 package site.metacoding.blogv3.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class UserController {
     private final HttpSession session;
     private final UserService userService;
 
-    // 회원가입
+    //회원가입
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO){
         User sessionUser = userService.join(reqDTO);
@@ -30,12 +31,13 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 회원가입폼
+    //회원가입폼
     @GetMapping("/join-form")
     public String joinForm() {
         return "user/joinForm";
     }
 
+    //로그인
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
         User sessionUser = userService.login(reqDTO);
@@ -54,13 +56,17 @@ public class UserController {
         return "user/passwordResetForm";
     }
 
+    //회원정보수정
     @GetMapping("/user/update-form")
-    public String updateForm() {
+    public String updateForm(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        UserResponse.UpdateDTO updateDTO = userService.UpdateForm(sessionUser.getId());
+        request.setAttribute("user", updateDTO);
 
         return "user/updateForm";
     }
 
-    // 로그아웃
+    //로그아웃
     @GetMapping("/logout")
     public String logout() {
         // 세션(session)을 무효화(invalidate)하는 작업을 수행

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.metacoding.blogv3._core.exception.ApiException400;
+import site.metacoding.blogv3._core.exception.ApiException404;
 import site.metacoding.blogv3._core.exception.Exception401;
 
 import java.util.Optional;
@@ -15,23 +16,18 @@ public class UserService {
     private final UserJPARepository userJPARepo;
     //private final EmailUtil emailUtil;
 
-    // 조회라 트랜젝션 안 붙여도 됨!
+    //로그인(조회라 트랜젝션 안 붙여도 됨!)
     public User login(UserRequest.LoginDTO reqDTO){
         User sessionUser = userJPARepo.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
                 .orElseThrow(() -> new Exception401("아이디 혹은 비밀번호를 확인해주세요.")); // orElseThrow 값이 null이면 이라는 뜻
         return sessionUser; // 세션에 저장
     }
 
-    @Transactional // userJPARepository 가 들고 있으면 안돼!! 한번에 여러개를 할 수 있으니까 서비스에서 통으로 관리해야 함
+    //회원가입
+    @Transactional
     public User join(UserRequest.JoinDTO reqDTO){
-
-        // 1. 유효성 검사(컨트롤러의 책임)
-        // save 하다가 날 수있는 오류의 종류가 엄청나게 많다
-        // 트라이캐치로 퉁치면 어디서 오류가 나는지 알 수 없다.
-
-        // 2. 유저네임 중복검사(서비스 체크) - DB 연결이 필요함
+        // 유저네임 중복검사(서비스 체크) - DB 연결이 필요함
         Optional<User> userOP = userJPARepo.findByUsername(reqDTO.getUsername());
-
 
         // isPresent가 있으면 비정상
         if (userOP.isPresent()) { // 유저 중복
@@ -40,8 +36,17 @@ public class UserService {
 
         // 아닌 경우 정상적으로 저장
         User user = userJPARepo.save(reqDTO.toEntity());
-        return user;
+        return user; 
+    }
+
+    //회원정보수정(값 뿌리기 조회)
+    public UserResponse.UpdateDTO UpdateForm(Integer sessionUserId) {
+        User user = userJPARepo.findById(sessionUserId)
+                .orElseThrow(() -> new ApiException404("회원 정보가 존재하지 않습니다."));
+
+        return new UserResponse.UpdateDTO(user.getUsername(), user.getEmail());
 
     }
+
 
 }

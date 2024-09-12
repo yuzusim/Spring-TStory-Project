@@ -29,9 +29,8 @@
     <br />
 </div>
 
-<!-- 비밀번호 동일 체크 -->
 <script>
-
+    <!-- 비밀번호 동일 체크 -->
     $("#same-password").on("input", function() {
         let password = $("#password").val(); // 비밀번호 입력값
         //console.log("패스워드 = " + password);
@@ -66,6 +65,7 @@
             });
         }
     });
+    <!-- 비밀번호 동일 체크 끝-->
 
     // 이메일 인증 안되면 막기 + 비번이 다르면 form 제출 못하게 막아놓음
     $("#joinForm").on("submit", function (e) {
@@ -95,11 +95,10 @@
                 button: "확인"
             });
         }
+        // 패스워드 유효성 검사
     });
 
 
 </script>
-<!-- 비밀번호 동일 체크 끝-->
-
 
 {{>/layout/footer}}
