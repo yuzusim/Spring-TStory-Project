@@ -10,15 +10,18 @@
             <!--method="post"-->
             <form action="/join" method="post">
                 <input id="username" class="my_auth_form_box_input" type="text" name="username" placeholder="유저네임"
-                    maxlength="20" required />
+                       maxlength="20" value="ssar1" required />
                 <input id="password" class="my_auth_form_box_input" type="password" name="password" placeholder="비밀번호"
-                    maxlength="20" required />
+                       maxlength="20" value="1234" required />
                 <input id="same-password" class="my_auth_form_box_input" type="password" name="" placeholder="비밀번호 확인"
-                    maxlength="20" required />
-                <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60"
-                    required />
-                <button type="submit" class="my_secondary_btn">회원가입</button>
+                       maxlength="20" required />
+                <div id="errorText" style="color: red">비밀번호가 일치하지 않습니다.</div>
+                <div id="successText" style="color: blue">비밀번호가 일치합니다.</div>
+                <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60" value="ssar1@nate.com"
+                       required />
+                <button type="submit" id="joinBtn" class="my_secondary_btn">회원가입</button>
             </form>
+
             <div class="my_auth_form_box_link">
                 <div><a href="/login-form">로그인</a></div>
                 <div><a href="/user/password-reset-form">비밀번호 찾기</a></div>
@@ -27,6 +30,47 @@
     </div>
     <br />
 </div>
+
+<!-- 비밀번호 동일 체크 -->
+<script>
+
+    $("#same-password").on("input", function() {
+        let password = $("#password").val(); // 비밀번호 입력값
+        //console.log("패스워드 = " + password);
+
+        let confirmPassword = $("#same-password").val(); // 비밀번호 확인 입력값
+        //console.log("확인용 = " + confirmPassword);
+
+
+        if (password === confirmPassword) {
+            $("#successText").show();
+            $("#errorText").hide();
+            $("#same-password").removeClass("error").addClass("correct");
+            $("#joinBtn").css({
+                "background-color": "rgb(255, 85, 68)",
+                "color": "rgba(255,255,255,.8)"
+            });
+
+
+        } else if (confirmPassword === "") {
+            $("#successText").hide();
+            $("#errorText").hide();
+
+        }
+        else {
+            $("#successText").hide();
+            $("#errorText").show();
+            $("#same-password").removeClass("correct").addClass("error");
+
+            $("#joinBtn").css({
+                "background-color": "",
+                "color": ""
+            });
+        }
+    });
+
+</script>
+<!-- 비밀번호 동일 체크 끝-->
 
 
 {{>/layout/footer}}

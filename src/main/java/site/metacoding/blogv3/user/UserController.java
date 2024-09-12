@@ -36,7 +36,6 @@ public class UserController {
         return "user/joinForm";
     }
 
-
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
         User sessionUser = userService.login(reqDTO);

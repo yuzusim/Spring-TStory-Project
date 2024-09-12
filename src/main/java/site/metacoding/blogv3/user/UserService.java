@@ -15,8 +15,6 @@ public class UserService {
     private final UserJPARepository userJPARepo;
     //private final EmailUtil emailUtil;
 
-
-
     // 조회라 트랜젝션 안 붙여도 됨!
     public User login(UserRequest.LoginDTO reqDTO){
         User sessionUser = userJPARepo.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
