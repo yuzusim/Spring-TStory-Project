@@ -1,11 +1,11 @@
 {{>/layout/main-header}}
 
 <style>
-    .password-container {
+    .pw-box {
         position: relative;
     }
 
-    .password-container .fa-solid {
+    .fa-solid {
         position: absolute;
         right: 10px;
         top: 50%;
@@ -33,18 +33,26 @@
             <!-- 수정은 put 요청 fetch 사용해야함 -->
             <form id="updateUserForm">
 
-                <input id="username" name="username" class="my_auth_form_box_input" type="text" placeholder="유저네임" maxlength="20"
+                <input id="username" name="username" class="my_auth_form_box_input" type="text" placeholder="유저네임"
+                       maxlength="20"
                        value="{{user.username}}" required readonly/>
-
-                <div class="password-container">
-                    <input id="password" name="password" class="my_auth_form_box_input" type="password" placeholder="기존 비밀번호"
-                           maxlength="20"
+                <!--비번 수정부분-->
+                <div class="pw-box">
+                    <input id="password" name="password" class="my_auth_form_box_input" type="password"
+                           placeholder="기존 비밀번호"
+                           maxlength="20" data-target="#password"
                            required/>
                     <i class="fa-solid fa-eye-slash togglePassword"></i>
                 </div>
 
-                <input id="same-password" class="my_auth_form_box_input" type="password" placeholder="수정 비밀번호"
-                       maxlength="20" required/>
+                <div class="pw-box">
+                    <input id="same-password" name="new-password" class="my_auth_form_box_input" type="password"
+                           placeholder="수정 비밀번호"
+                           maxlength="20" data-target="#same-password" required/>
+                    <i class="fa-solid fa-eye-slash togglePassword"></i>
+                </div>
+                <!--비번 수정부분-->
+
                 <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60"
                        value="{{user.email}}" required readonly/>
                 <button type="submit" class="my_secondary_btn">회원정보수정</button>
@@ -59,6 +67,18 @@
 </div>
 
 <script>
+    //비밀번호 숨기기 보이기
+    $('.togglePassword').on('click', function () {
+        $(this).toggleClass('active');
+
+        if ($(this).hasClass('active')) {
+            $(this).find("fa-eye").attr('class', "fa-eye-slash")
+                    .parents('.pw-box').find('#password').attr('type', "text");
+        } else {
+            $(this).find("fa-eye-slash").attr('class', "fa-eye")
+                    .parents('.pw-box').find('#password').attr('type', "text");
+        }
+    });
 
     $("#updateUserForm").on("submit", function (e) {
         e.preventDefault();
@@ -105,20 +125,20 @@
         });
     });
 
+    //비밀번호 숨기기 보이기
+    $('.togglePassword').on('click', function () {
+        $(this).toggleClass('active');
 
-    $(".togglePassword").on("click", function () {
-        // 현재 클릭된 아이콘의 비밀번호 입력 필드 찾기
-        let input = $(this).siblings("input");
-        let type = input.attr("type");
-
-        if (type === "password") {
-            input.attr("type", "text");
-            $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+        if ($(this).hasClass('active')) {
+            $(this).find("fa-eye").attr('class', "fa-eye-slash")
+                    .parents('.pw-box').find('#password').attr('type', "text");
         } else {
-            input.attr("type", "password");
-            $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            $(this).find("fa-eye-slash").attr('class', "fa-eye")
+                    .parents('.pw-box').find('#password').attr('type', "text");
         }
     });
+
+
 
 </script>
 
