@@ -32,7 +32,6 @@
             </div>
             <!-- 수정은 put 요청 fetch 사용해야함 -->
             <form id="updateUserForm">
-
                 <input id="username" name="username" class="my_auth_form_box_input" type="text" placeholder="유저네임"
                        maxlength="20"
                        value="{{user.username}}" required readonly/>
@@ -44,15 +43,13 @@
                            required/>
                     <i class="fa-solid fa-eye-slash togglePassword"></i>
                 </div>
-
                 <div class="pw-box">
                     <input id="same-password" name="new-password" class="my_auth_form_box_input" type="password"
                            placeholder="수정 비밀번호"
                            maxlength="20" data-target="#same-password" required/>
-                    <i class="fa-solid fa-eye-slash togglePassword"></i>
+                        <i class="fa-solid fa-eye-slash togglePassword"></i>
                 </div>
                 <!--비번 수정부분-->
-
                 <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60"
                        value="{{user.email}}" required readonly/>
                 <button type="submit" class="my_secondary_btn">회원정보수정</button>
@@ -67,19 +64,6 @@
 </div>
 
 <script>
-    //비밀번호 숨기기 보이기
-    $('.togglePassword').on('click', function () {
-        $(this).toggleClass('active');
-
-        if ($(this).hasClass('active')) {
-            $(this).find("fa-eye").attr('class', "fa-eye-slash")
-                    .parents('.pw-box').find('#password').attr('type', "text");
-        } else {
-            $(this).find("fa-eye-slash").attr('class', "fa-eye")
-                    .parents('.pw-box').find('#password').attr('type', "text");
-        }
-    });
-
     $("#updateUserForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -126,17 +110,44 @@
     });
 
     //비밀번호 숨기기 보이기
-    $('.togglePassword').on('click', function () {
-        $(this).toggleClass('active');
+    // $('.togglePassword').on('click', function () {
+    //     $(this).toggleClass('active');
+    //
+    //     if ($(this).hasClass('active')) {
+    //         $(this).find("fa-eye").attr('class', "fa-eye-slash")
+    //                 .parents('.pw-box').find('#password').attr('type', "text");
+    //     } else {
+    //         $(this).find("fa-eye-slash").attr('class', "fa-eye")
+    //                 .parents('.pw-box').find('#password').attr('type', "text");
+    //     }
+    // });
 
-        if ($(this).hasClass('active')) {
-            $(this).find("fa-eye").attr('class', "fa-eye-slash")
-                    .parents('.pw-box').find('#password').attr('type', "text");
-        } else {
-            $(this).find("fa-eye-slash").attr('class', "fa-eye")
-                    .parents('.pw-box').find('#password').attr('type', "text");
-        }
+    // $('.togglePassword').on('click', function () {
+    //     let input = $(this).siblings('input'); // 바로 옆의 비밀번호 필드
+    //     input.attr('type', input.attr('type') === 'password' ? 'text' : 'password'); // type 속성 토글
+    //
+    //     // 아이콘을 변경
+    //     $(this).toggleClass('fa-eye fa-eye-slash');
+    // });
+
+    // 비밀번호 입력 필드 타입을 토글하는 함수
+    function togglePasswordVisibility($icon, $input) {
+        // 입력 필드의 type 속성을 토글
+        $input.attr('type', $input.attr('type') === 'password' ? 'text' : 'password');
+
+        // 아이콘을 토글
+        $icon.toggleClass('fa-eye fa-eye-slash');
+    }
+
+    // 토글 이벤트 핸들러
+    $('.togglePassword').on('click', function () {
+        let $icon = $(this); // 클릭된 아이콘
+        let $input = $icon.siblings('input'); // 아이콘 옆의 입력 필드
+
+        // 비밀번호 보이기/숨기기 함수 호출
+        togglePasswordVisibility($icon, $input);
     });
+
 
 
 
