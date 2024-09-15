@@ -68,4 +68,33 @@ public class UserService {
         user.setPassword(reqDTO.getNewPassword());
     }
 
+    // username 중복 검색
+    public UserEnum usernameCheck(String username) {
+        // 주어진 username으로 사용자 정보를 조회
+        Optional<User> userOP = userJPARepo.findByUsername(username);
+
+        //System.out.println("username = " + username);
+        //System.out.println("userOP = " + userOP);
+
+        // UserEnum 타입의 변수를 선언
+        UserEnum userStatus;
+        
+        // 조회된 사용자 정보가 있을 경우
+        if (userOP.isPresent()) {
+            userStatus = UserEnum.USER_EXIST; // 사용자 존재 상태를 설정(유저 중복)
+            System.out.println("userStatus = " + userStatus);
+            return userStatus; // 설정된 상태를 반환
+
+        } else {
+            // 조회된 사용자 정보가 없을 경우
+            userStatus = UserEnum.USER_NO_EXIST; // 사용자 미존재 상태를 설정(유저 네임 사용 가능)
+            System.out.println("userStatus = " + userStatus);
+        }
+        return userStatus; // USER_EXIST 또는 USER_NO_EXIST 반환
+
+    }
+
 }
+
+
+

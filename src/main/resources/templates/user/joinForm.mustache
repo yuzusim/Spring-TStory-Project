@@ -8,7 +8,10 @@
             </div>
             <form action="/join" method="post" id="joinForm">
                 <input id="username" class="my_auth_form_box_input" type="text" name="username" placeholder="유저네임"
-                       maxlength="20" value="ssar1" required />
+                       maxlength="20" value="" required />
+                <div id="usernameError" class="my_hidden" style="color: red">중복된 아이디입니다.</div>
+                <div id="usernameSuccess" class="my_hidden" style="color: blue">사용 가능한 아이디입니다.</div>
+
                 <input id="password" class="my_auth_form_box_input" type="password" name="password" placeholder="비밀번호"
                        maxlength="20" value="1234" required />
                 <input id="same-password" class="my_auth_form_box_input" type="password" name="" placeholder="비밀번호 확인"
@@ -30,6 +33,48 @@
 </div>
 
 <script>
+    <!-- username 중복 체크 -->
+    // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
+    $("#username").on('keyup', function() {
+        // 입력된 비밀번호 값을 가져와서 콘솔에 출력
+        console.log($(this).val());
+        let username = $(this).val();
+
+        $.ajax({
+            url: '/username-check?username=' + username,
+            type: 'GET'
+
+        }).done((res) => {
+            console.log("Res " + JSON.stringify(res));
+
+            // 응답 구조에 따라 확인
+            if (username === "") {
+                // 입력란이 빈 경우 텍스트 숨기기
+                $("#usernameError, #usernameSuccess").addClass("my_hidden").hide();
+            } else if (res.body === "USER_EXIST") {
+                showError(); // 에러 메시지 표시
+            } else if (res.body === "USER_NO_EXIST") {
+                showSuccess(); // 성공 메시지 표시
+            }
+        }).fail((res) => {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        });
+
+    });
+
+    // 에러 메시지를 표시하고 성공 메시지를 숨기는 함수
+    function showError() {
+        $("#usernameError").removeClass("my_hidden").show();
+        $("#usernameSuccess").addClass("my_hidden").hide();
+    }
+
+    // 성공 메시지를 표시하고 에러 메시지를 숨기는 함수
+    function showSuccess() {
+        $("#usernameSuccess").removeClass("my_hidden").show();
+        $("#usernameError").addClass("my_hidden").hide();
+    }
+    <!-- username 중복 체크 끝-->
+
     <!-- 비밀번호 동일 체크 -->
     $("#same-password").on("input", function() {
         let password = $("#password").val(); // 비밀번호 입력값

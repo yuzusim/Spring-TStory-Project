@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import site.metacoding.blogv3._core.util.ApiUtil;
 
 @RequiredArgsConstructor
@@ -51,11 +48,42 @@ public class UserController {
         return "user/loginForm";
     }
 
-
+    //패스워드초기화
     @GetMapping("/user/password-reset-form")
     public String passwordResetForm() {
         return "user/passwordResetForm";
     }
+
+    //유저네임중복체크
+//    @GetMapping("/api/username-same-check")
+//    public @ResponseBody ApiUtil<?> usernameSameCheck(@RequestParam("username") String username) {
+//        User user = userRepo.findByUsername(username);
+//        if (user == null) { // 회원가입 해도 된다.
+//            return new ApiUtil<>(true);
+//        } else { // 회원가입 하면 안된다.
+//            return new ApiUtil<>(false);
+//        }
+//    }
+//    @GetMapping("/username-same-check")
+//    public ResponseEntity<?> usernameCheck(String username) {
+//        System.out.println("username = " + username);
+////        UserEnum usernameCheck = userService.usernameCheck(username);
+////        System.out.println("usernameCheck = " + usernameCheck);
+////        return ResponseEntity.ok(new ApiUtil<>(usernameCheck));
+//
+//        userService.usernameCheck(username);
+//        return null;
+//    }
+
+    @GetMapping("/username-check")
+    public ResponseEntity<?> usernameCheck(String username) {
+//        System.out.println("username = " + username);
+        UserEnum usernameCheck = userService.usernameCheck(username);
+//        System.out.println("usernameCheck = " + usernameCheck);
+
+        return ResponseEntity.ok(new ApiUtil<>(usernameCheck));
+    }
+
 
     //회원정보수정
     @GetMapping("/user/update-form")
