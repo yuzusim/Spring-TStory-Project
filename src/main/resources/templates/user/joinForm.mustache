@@ -35,7 +35,8 @@
 <script>
     <!-- username 중복 체크 -->
     // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
-    $("#username").on('keyup', function() {
+    $("#username").on('keyup', _.debounce(function() {
+        console.log("Debounced event triggered"); // 디바운스 후 로그 출력
         // 입력된 비밀번호 값을 가져와서 콘솔에 출력
         console.log($(this).val());
         let username = $(this).val();
@@ -59,8 +60,9 @@
         }).fail((res) => {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");
         });
+    }, 300));
 
-    });
+
 
     // 에러 메시지를 표시하고 성공 메시지를 숨기는 함수
     function showError() {
