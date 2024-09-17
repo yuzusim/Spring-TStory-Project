@@ -12,6 +12,7 @@ import site.metacoding.blogv3._core.exception.ApiException404;
 import site.metacoding.blogv3._core.exception.Exception401;
 import site.metacoding.blogv3._core.util.EmailUtil;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -103,53 +104,22 @@ public class UserService {
     }
 
     //이메일인증
-//    public String mailCheck(String email){
-//        MimeMessage message = sender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(message);
-//
-//        String htmlContent = getCertificationMessage(body);
-//
-//        try {
-//            // 어디로 메일 보낼거냐
-//            helper.setTo(toAddress);
-//            // 제목이 무엇이냐
-//            helper.setSubject(subject);
-//            // true로 하면 html 디자인 되어있는 콘텐트를 넣어준다
-//            helper.setText(htmlContent, true);
-//
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // 내가 설정한 이메일로 날아감
-//        sender.send(message);
-//
-//
-//        return null;
-//    }
-
-    public CertificationService(EmailUtil emailUtil) {
-        this.emailUtil = emailUtil;
-    }
-
-    public String sendCertificationEmail(String emailAddress) {
-        // 1. 인증 코드 생성
-        String certificationNumber = generateCertificationNumber();
-
-        // 2. 이메일 전송
-        String subject = "Your Certification Code";
-        String body = certificationNumber;
-        emailUtil.sendEmail(emailAddress, subject, body);
-
-        // 3. 생성된 인증 코드를 반환 (DB나 캐시에 저장할 수 있음)
-        return certificationNumber;
-    }
-
-    public String generateCertificationNumber() {
+    public String mailCheck(String email){
         Random random = new Random();
-        int certificationNumber = random.nextInt(900000) + 100000; // 6자리 인증번호 생성
-        return String.valueOf(certificationNumber);
+        int randomNumb;
+        StringBuilder code = new StringBuilder();
+        String randomNumStr = ""; // 사용할 문자 집합
+
+        for (int i = 0; i < 6; i++) {
+            randomNumb = random.nextInt(randomNumStr.length()); // 문자 집합의 길이 내에서 랜덤 인덱스 생성
+            code.append(randomNumStr.charAt(randomNumb)); // 랜덤 인덱스에 해당하는 문자 추가
+        }
+
+        System.out.println("randomNumStr: "+ randomNumStr);
+        return randomNumStr;
+
     }
+
 
 
 

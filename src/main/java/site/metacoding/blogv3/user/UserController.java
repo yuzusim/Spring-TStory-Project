@@ -2,15 +2,12 @@ package site.metacoding.blogv3.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import site.metacoding.blogv3._core.util.ApiUtil;
-import site.metacoding.blogv3._core.util.EmailUtil;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,13 +18,18 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    public String join(UserRequest.JoinDTO reqDTO) {
+    public ResponseEntity<ApiUtil<Integer>> join(@ModelAttribute UserRequest.JoinDTO reqDTO) {
+        // 이메일 인증 여부 확인
+        if (reqDTO.getIsEmailConfirmed() == null || !reqDTO.getIsEmailConfirmed()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiUtil<>(HttpStatus.BAD_REQUEST.value(), "이메일 인증이 필요합니다."));
+        }
+
         User sessionUser = userService.join(reqDTO);
 
         // 회원가입 후 바로 로그인
         session.setAttribute("sessionUser", sessionUser);
-        //return ResponseEntity.ok(new ApiUtil<>(200));
-        return "redirect:/";
+        return ResponseEntity.ok(new ApiUtil<>(200));
     }
 
     //회원가입폼
@@ -57,13 +59,16 @@ public class UserController {
 
     //이메일인증
     @GetMapping("/sendmail")
-    public ResponseEntity<?> sendMail(EmailUtil emailUtil) {
-
-        String emailCode = userService.sendCertificationEmail(emailUtil);
+    public ResponseEntity<?> sendMail(String email) {
+        String emailCode = userService.mailCheck(email);
         System.out.println("emailCode = " + emailCode);
+
+        return ResponseEntity.ok(new ApiUtil<>(emailCode));
+
         //emailUtil.sendEmail("compilemate@gmail.com", "[Tistory 인증메일]", "되는지 테스트 하는 거예요");
         //return "메일 잘 보내졌어";
-        return null;
+        //return null;
+        //return ResponseEntity.ok("이메일로 인증 코드가 발송되었습니다.");
     }
 
     //유저네임중복체크
