@@ -35,3 +35,21 @@
     border-bottom: 2px solid black;
 }
 #successText, #errorText {display: none;}
+
+/*회원가입*/
+.btn-outline-info {
+    border: 1px solid #1EB49F;
+    color: #1EB49F;
+}
+
+.btn-outline-info:hover {
+    background-color: #1EB49F;
+}
+
+#emailAuthButton{
+    width:100px;
+    height: 40px; margin-top: 5px;
+}
+.email-box{border-bottom: 1px solid rgb(185, 185, 185);}
+.email-box input{border-bottom: none}
+/*회원가입*/

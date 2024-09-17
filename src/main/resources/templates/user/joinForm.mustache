@@ -8,18 +8,25 @@
             </div>
             <form action="/join" method="post" id="joinForm">
                 <input id="username" class="my_auth_form_box_input" type="text" name="username" placeholder="유저네임"
-                       maxlength="20" value="" required />
+                       maxlength="20" value="" required/>
                 <div id="usernameError" class="my_hidden" style="color: red">중복된 아이디입니다.</div>
                 <div id="usernameSuccess" class="my_hidden" style="color: blue">사용 가능한 아이디입니다.</div>
 
                 <input id="password" class="my_auth_form_box_input" type="password" name="password" placeholder="비밀번호"
-                       maxlength="20" value="1234" required />
+                       maxlength="20" value="1234" required/>
                 <input id="same-password" class="my_auth_form_box_input" type="password" name="" placeholder="비밀번호 확인"
-                       maxlength="20" required />
+                       maxlength="20" required/>
                 <div id="errorText" style="color: red">비밀번호가 일치하지 않습니다.</div>
                 <div id="successText" style="color: blue">비밀번호가 일치합니다.</div>
-                <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60" value="ssar1@nate.com"
-                       required />
+
+                <div class="email-box d-flex">
+                    <input class="my_auth_form_box_input" type="email" name="email" placeholder="이메일" maxlength="60"
+                           value="ssar1@nate.com"
+                           required/>
+                    <button class="btn btn-outline-info btn-sm" type="button" id="emailAuthButton">인증하기</button>
+                    <!--                <button class="btn btn-outline-success btn-sm" type="submit" onclick="emailCheck()">인증하기</button>-->
+                </div>
+
                 <button type="submit" id="joinBtn" class="my_secondary_btn">회원가입</button>
             </form>
 
@@ -29,13 +36,26 @@
             </div>
         </div>
     </div>
-    <br />
+    <br/>
+</div>
+
+<!-- modal -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <p style="font-size: 30px">💌 발송 완료 💌</p>
+        <input type="text" id="authCodeText" placeholder="인증번호를 입력해주세요"/>
+        <div class="modal-buttons">
+            <button id="cancelBtn">취소</button>
+            <button id="confirmBtn">확인</button>
+        </div>
+    </div>
 </div>
 
 <script>
+
     <!-- username 중복 체크 -->
     // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
-    $("#username").on('keyup', _.debounce(function() {
+    $("#username").on('keyup', _.debounce(function () {
         console.log("Debounced event triggered"); // 디바운스 후 로그 출력
         // 입력된 비밀번호 값을 가져와서 콘솔에 출력
         console.log($(this).val());
@@ -74,10 +94,11 @@
         $("#usernameSuccess").removeClass("my_hidden").show();
         $("#usernameError").addClass("my_hidden").hide();
     }
+
     <!-- username 중복 체크 끝-->
 
     <!-- 비밀번호 동일 체크 -->
-    $("#same-password").on("input", function() {
+    $("#same-password").on("input", function () {
         let password = $("#password").val(); // 비밀번호 입력값
         //console.log("패스워드 = " + password);
 
@@ -99,8 +120,7 @@
             $("#successText").hide();
             $("#errorText").hide();
 
-        }
-        else {
+        } else {
             $("#successText").hide();
             $("#errorText").show();
             $("#same-password").removeClass("correct").addClass("error");
