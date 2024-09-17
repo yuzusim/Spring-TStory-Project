@@ -109,6 +109,11 @@
     margin: 5px 0;
 }
 
+.my_secondary_btn:hover{
+    background-color: rgb(255,85,68);
+    transition: all .3s ease-in-out;
+}
+
 .my_success_btn {
     display: flex;
     justify-content: center;

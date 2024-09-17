@@ -9,6 +9,7 @@
     cursor: pointer;
     color: white;
     background-color: black;
+    transition: all .3s ease-in-out;
 }
 
 .my_main_start_btn:hover {

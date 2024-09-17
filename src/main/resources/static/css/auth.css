@@ -38,12 +38,18 @@
 
 /*회원가입*/
 .btn-outline-info {
-    border: 1px solid #1EB49F;
-    color: #1EB49F;
+    /*border: 1px solid #1EB49F;*/
+    /*color: #1EB49F;*/
+    border: 1px solid rgb(255,85,68);
+    color: rgb(255,85,68);
 }
 
 .btn-outline-info:hover {
-    background-color: #1EB49F;
+    /*background-color: #1EB49F;*/
+    background-color: rgb(185,185,185);
+    border:none;
+    color: rgba(255,255,255);
+    transition: all .3s ease-in-out;
 }
 
 #emailAuthButton{
