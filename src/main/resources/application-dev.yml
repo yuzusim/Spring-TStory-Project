@@ -11,8 +11,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: codingstory2@gmail.com
-    password: bnkz nzif bksi ppai
+    username: compilemate@gmail.com
+    password: w f e o bi u h p m c c w g r q
     properties:
       mail:
         smtp:

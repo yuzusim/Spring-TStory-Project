@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import site.metacoding.blogv3._core.util.ApiUtil;
+import site.metacoding.blogv3._core.util.EmailUtil;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,27 +55,18 @@ public class UserController {
         return "user/passwordResetForm";
     }
 
-    //유저네임중복체크
-//    @GetMapping("/api/username-same-check")
-//    public @ResponseBody ApiUtil<?> usernameSameCheck(@RequestParam("username") String username) {
-//        User user = userRepo.findByUsername(username);
-//        if (user == null) { // 회원가입 해도 된다.
-//            return new ApiUtil<>(true);
-//        } else { // 회원가입 하면 안된다.
-//            return new ApiUtil<>(false);
-//        }
-//    }
-//    @GetMapping("/username-same-check")
-//    public ResponseEntity<?> usernameCheck(String username) {
-//        System.out.println("username = " + username);
-////        UserEnum usernameCheck = userService.usernameCheck(username);
-////        System.out.println("usernameCheck = " + usernameCheck);
-////        return ResponseEntity.ok(new ApiUtil<>(usernameCheck));
-//
-//        userService.usernameCheck(username);
-//        return null;
-//    }
+    //이메일인증
+    @GetMapping("/sendmail")
+    public ResponseEntity<?> sendMail(EmailUtil emailUtil) {
 
+        String emailCode = userService.sendCertificationEmail(emailUtil);
+        System.out.println("emailCode = " + emailCode);
+        //emailUtil.sendEmail("compilemate@gmail.com", "[Tistory 인증메일]", "되는지 테스트 하는 거예요");
+        //return "메일 잘 보내졌어";
+        return null;
+    }
+
+    //유저네임중복체크
     @GetMapping("/username-check")
     public ResponseEntity<?> usernameCheck(String username) {
 //        System.out.println("username = " + username);

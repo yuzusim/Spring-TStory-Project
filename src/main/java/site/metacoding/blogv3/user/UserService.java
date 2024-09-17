@@ -1,20 +1,27 @@
 package site.metacoding.blogv3.user;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.metacoding.blogv3._core.exception.ApiException400;
 import site.metacoding.blogv3._core.exception.ApiException404;
 import site.metacoding.blogv3._core.exception.Exception401;
+import site.metacoding.blogv3._core.util.EmailUtil;
 
 import java.util.Optional;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserJPARepository userJPARepo;
-    //private final EmailUtil emailUtil;
+    //private final JavaMailSender sender;
+    private final EmailUtil emailUtil;
 
     //로그인(조회라 트랜젝션 안 붙여도 됨!)
     public User login(UserRequest.LoginDTO reqDTO) {
@@ -47,6 +54,7 @@ public class UserService {
         return new UserResponse.UpdateDTO(user.getUsername(), user.getEmail());
     }
 
+    //회원저보수정(비밀번호변경)
     @Transactional
     public void userUpdate(Integer sessionUserId, UserRequest.UpdateDTO reqDTO) {
         //먼저 조회
@@ -93,6 +101,58 @@ public class UserService {
         return userStatus; // USER_EXIST 또는 USER_NO_EXIST 반환
 
     }
+
+    //이메일인증
+//    public String mailCheck(String email){
+//        MimeMessage message = sender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(message);
+//
+//        String htmlContent = getCertificationMessage(body);
+//
+//        try {
+//            // 어디로 메일 보낼거냐
+//            helper.setTo(toAddress);
+//            // 제목이 무엇이냐
+//            helper.setSubject(subject);
+//            // true로 하면 html 디자인 되어있는 콘텐트를 넣어준다
+//            helper.setText(htmlContent, true);
+//
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // 내가 설정한 이메일로 날아감
+//        sender.send(message);
+//
+//
+//        return null;
+//    }
+
+    public CertificationService(EmailUtil emailUtil) {
+        this.emailUtil = emailUtil;
+    }
+
+    public String sendCertificationEmail(String emailAddress) {
+        // 1. 인증 코드 생성
+        String certificationNumber = generateCertificationNumber();
+
+        // 2. 이메일 전송
+        String subject = "Your Certification Code";
+        String body = certificationNumber;
+        emailUtil.sendEmail(emailAddress, subject, body);
+
+        // 3. 생성된 인증 코드를 반환 (DB나 캐시에 저장할 수 있음)
+        return certificationNumber;
+    }
+
+    public String generateCertificationNumber() {
+        Random random = new Random();
+        int certificationNumber = random.nextInt(900000) + 100000; // 6자리 인증번호 생성
+        return String.valueOf(certificationNumber);
+    }
+
+
+
 
 }
 
