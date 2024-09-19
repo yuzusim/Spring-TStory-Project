@@ -1,10 +1,6 @@
 package site.metacoding.blogv3.user;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.metacoding.blogv3._core.exception.ApiException400;
@@ -12,7 +8,6 @@ import site.metacoding.blogv3._core.exception.ApiException404;
 import site.metacoding.blogv3._core.exception.Exception401;
 import site.metacoding.blogv3._core.util.EmailUtil;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -87,7 +82,7 @@ public class UserService {
 
         // UserEnum 타입의 변수를 선언
         UserEnum userStatus;
-        
+
         // 조회된 사용자 정보가 있을 경우
         if (userOP.isPresent()) {
             userStatus = UserEnum.USER_EXIST; // 사용자 존재 상태를 설정(유저 중복)
@@ -104,47 +99,48 @@ public class UserService {
     }
 
     //이메일인증
-    public String mailCheck(String email){
-        // 타이틀
+    public String mailCheck(String email) {
         String subject = "[Tistroy 회원가입 인증메일입니다]";
-
-//        Random random = new Random();
-//        int randomNumb;
-//        StringBuilder code = new StringBuilder();
-//        String randomNumStr = ""; // 사용할 문자 집합
-//
-//        for (int i = 0; i < 6; i++) {
-//            randomNumb = random.nextInt(randomNumStr.length()); // 문자 집합의 길이 내에서 랜덤 인덱스 생성
-//            code.append(randomNumStr.charAt(randomNumb)); // 랜덤 인덱스에 해당하는 문자 추가
-//        }
-//
-//        System.out.println("randomNumStr: "+ randomNumStr);
-//
-//        emailUtil.sendEmail(subject, randomNumStr);
-//        return randomNumStr;
-
-        // 문자 집합 (영문 대문자, 소문자, 숫자)
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
         StringBuilder code = new StringBuilder();
 
-        // 6자리 랜덤 인증 코드 생성
+        // 6자리 랜덤 숫자 생성
         for (int i = 0; i < 6; i++) {
-            int index = random.nextInt(characters.length()); // 문자 집합의 길이 내에서 랜덤 인덱스 생성
-            code.append(characters.charAt(index)); // 랜덤 인덱스에 해당하는 문자 추가
+            int randomNum = random.nextInt(10); // 0부터 9까지 랜덤 숫자 생성
+            code.append(randomNum); // 숫자 추가
         }
 
-        String randomCode = code.toString();
-        System.out.println("Generated Code: " + randomCode);
-
+        System.out.println("Generated Code: " + code.toString()); // 생성된 코드 출력
         // 이메일로 인증 코드 전송
-        String body = "귀하의 인증 코드는 " + randomCode + "입니다.";
+        String body = "귀하의 인증 코드는 " + code.toString() + "입니다.";
         emailUtil.sendEmail(email, subject, body);
 
-        return randomCode;
-
+        return code.toString(); // 최종 랜덤 코드 반환
     }
 
+
+
+//    public String mailCheck(String email) {
+//        // 타이틀
+//        String subject = "[Tistroy 회원가입 인증메일입니다]";
+//
+//
+//            Random random = new Random();
+//            int randomNum;
+//            StringBuilder code = new StringBuilder();
+////            String randomNumStr = ""; // 사용할 문자 집합
+//
+//            // 6자리 랜덤 숫자 생성
+//            for (int i = 0; i < 6; i++) {
+//                randomNum = random.nextInt(10); // 0부터 9까지 랜덤 숫자 생성
+//                code.append(randomNum); // 숫자 추가
+//            }
+//
+////        emailUtil.sendEmail( subject);
+//
+//        System.out.println("Generated Code: " + code);
+//            return code.toString(); // 최종 랜덤 코드 반환
+//        }
 
 }
 

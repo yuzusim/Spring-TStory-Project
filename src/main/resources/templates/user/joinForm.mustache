@@ -53,6 +53,82 @@
 
 <script>
 
+    // 모달창을 보이게 하는 함수
+    function showModal() {
+        $('#authCodeText').val('');
+        $('#authModal').css('display', 'block');
+    }
+
+    // "인증하기" 버튼 클릭 시 이메일로 인증번호 보내기 모달창 보이기
+    $('#emailAuthButton').on('click', function () {
+        emailSendCode();
+    });
+
+    // 취소 버튼 클릭 시 모달창 닫기
+    $('#cancelBtn').on('click', function () {
+        $('#authModal').css('display', 'none');
+        // 인증 코드 입력란 초기화
+    });
+    // 모달창 스크립트 끝
+
+    <!-- 이메일 주소로 메일 보내기 -->
+    function emailSendCode() {
+        let email = encodeURIComponent($("#email").val());
+
+        $.ajax({
+            url: '/send-mail?email=' + email,  // AJAX URL과 서버 매핑 URL 일치 여부 확인
+            type: 'GET'
+        }).done((res) => {
+            console.log("Response:", res);
+            emailCode = res.body;
+            console.log("Received code:", emailCode);
+            showModal();
+        }).fail((jqXHR, textStatus, errorThrown) => {
+            console.error("AJAX Error:", textStatus, errorThrown);  // 오류 원인 출력
+            alert("이메일 인증 요청 중 오류가 발생했습니다.");
+        });
+    }
+
+    // function emailSendCode() {
+    //     console.log($("#email").val());
+    //     let email = encodeURIComponent($("#email").val());
+    //
+    //     $.ajax({
+    //         url: '/send-mail?email=' + email,
+    //         type: 'GET'
+    //     }).done((res) => {
+    //         console.log("Res: " + JSON.stringify(res));
+    //         emailCode = res.body;
+    //         console.log("보낸 코드: " + emailCode);  // 응답 받은 인증 코드
+    //         showModal();
+    //     }).fail((res) => {
+    //         alert("오류 발생: " + JSON.stringify(res));
+    //     });
+    // }
+
+    // // 전역 변수 선언
+    // let emailCode;
+    //
+    // function emailSendCode() {
+    //     console.log($("#email").val());
+    //     let email = encodeURIComponent($("#email").val());
+    //
+    //     $.ajax({
+    //         url: '/send-mail?email=' + email,
+    //         type: 'GET'
+    //
+    //     }).done((res) => {
+    //          console.log("Res " + JSON.stringify(res));
+    //         emailCode = res.body;
+    //         console.log("보낸 코드 " + emailCode);
+    //         showModal();
+    //
+    //     }).fail((res) => {
+    //         alert("오류");
+    //     });
+    //
+    // }
+
 
     <!-- username 중복 체크 -->
     // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가

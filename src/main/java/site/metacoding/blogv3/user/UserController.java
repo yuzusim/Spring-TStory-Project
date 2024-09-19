@@ -58,18 +58,23 @@ public class UserController {
     }
 
     //이메일인증
-    @GetMapping("/sendmail")
+//    @GetMapping("/send-mail")
+//    public ResponseEntity<?> sendMail(String email) {
+//        String emailCode = userService.mailCheck(email);
+//        System.out.println("emailCode = " + emailCode);
+//
+//        return ResponseEntity.ok(new ApiUtil<>(emailCode));
+//
+//
+//    }
+
+    @GetMapping("/send-mail")
     public ResponseEntity<?> sendMail(String email) {
         String emailCode = userService.mailCheck(email);
-        System.out.println("emailCode = " + emailCode);
-
+        System.out.println("Generated emailCode = " + emailCode);
         return ResponseEntity.ok(new ApiUtil<>(emailCode));
-
-        //emailUtil.sendEmail("compilemate@gmail.com", "[Tistory 인증메일]", "되는지 테스트 하는 거예요");
-        //return "메일 잘 보내졌어";
-        //return null;
-        //return ResponseEntity.ok("이메일로 인증 코드가 발송되었습니다.");
     }
+
 
     //유저네임중복체크
     @GetMapping("/username-check")
