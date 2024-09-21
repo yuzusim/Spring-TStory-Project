@@ -21,7 +21,7 @@
 
                 <div class="email-box d-flex">
                     <input class="my_auth_form_box_input" id="email" type="email" name="email" placeholder="이메일" maxlength="60"
-                           value="ssar1@nate.com"
+                           value="compilemate@gmail.com"
                            required/>
 
 <!--                    <a href="javascript:openModal('modal1');" class="close">(자세히보기)</a>-->
@@ -36,6 +36,9 @@
 
                                   -->
                 </div>
+
+                <!-- 여기에 hidden input을 추가하세요 -->
+                <input type="hidden" id="isEmailConfirmed" name="isEmailConfirmed" value="false">
 
                 <button type="submit" id="joinBtn" class="my_secondary_btn">회원가입</button>
             </form>
@@ -62,18 +65,6 @@
 </div>
 
 <script>
-
-    // 모달창을 보이게 하는 함수
-    // function openModal(modalname) {
-    //     document.get
-    //     $("#authModal").fadeIn(300);
-    //     $("." + modalname).fadeIn(300);
-    // }
-    //
-    // $("#authModal, .close").on('click', function() {
-    //     $("#authModal").fadeOut(300);
-    //     $(".modal-content").fadeOut(300);
-    // });
 
 
     function showModal() {
@@ -104,18 +95,6 @@
         $.ajax({
             url: '/send-mail?email=' + email,  // AJAX URL과 서버 매핑 URL 일치 여부 확인
             type: 'GET'
-        // }).done((res) => {
-        //     console.log("Res " + JSON.stringify(res));
-        //
-        // }).fail((res) => {
-        //     alert("오류");
-        // });
-
-        //
-        //             .fail((jqXHR, textStatus, errorThrown) => {
-        //                 console.error("AJAX Error:", textStatus, errorThrown);  // 오류 원인 출력
-        //                 alert("이메일 인증 요청 중 오류가 발생했습니다.");
-        //             });
 
         }).done((res) => {
             console.log("Response:", res);
@@ -132,15 +111,12 @@
     let isEmailConfirmed = false;
 
     $("#confirmBtn").click(function () {
-
         let checkEmailCode = $("#authCodeText").val();
-        // console.log("입력 코드 " + checkCode);
 
         $.ajax({
             url: '/check-email-code?emailCode=' + checkEmailCode,
             type: 'GET'
-
-        }).done((res)=>{
+        }).done((res) => {
             if (res.body) {
                 Swal.fire({
                     title: "인증이 완료되었습니다.",
@@ -148,85 +124,66 @@
                     button: "확인"
                 });
                 $('#authModal').css('display', 'none');
-                isEmailConfirmed = true;
-
+                isEmailConfirmed = true; // 인증이 완료되었으므로 true로 설정
+                $('#isEmailConfirmed').val('true'); // 서버로 값을 전송하기 위해 숨겨진 필드에 값 설정
             } else {
                 Swal.fire({
                     title: "인증번호를 확인해주세요",
                     icon: "warning",
-                    button: "확인"
+                    confirmButtonText: "확인"
                 });
-                $('#authModal').css('display', 'block');
             }
-
         }).fail((res) => {
             alert("오류");
         });
-
     });
 
-    // 인증번호 확인 로직 끝
 
-
-
-    // 모달 확인 버튼 클릭 시 인증 코드 검증
     // $("#confirmBtn").click(function () {
-    //     let inputCode = $("#authCodeText").val(); // 사용자가 입력한 코드
+    //
+    //     let checkEmailCode = $("#authCodeText").val();
+    //     // console.log("입력 코드 " + checkCode);
     //
     //     $.ajax({
-    //         url: '/user/verify-code',
-    //         type: 'GET',
-    //         data: { code: inputCode }
-    //
-    //
-    //     }).done((res) => {
-    //         alert("인증 성공!");
-    //         // 인증 성공 후 로직 추가 (예: 회원가입 버튼 활성화 등)
-    //     }).fail((res) => {
-    //         alert("인증 실패, 다시 시도해주세요.");
-    //     });
-    // });
-
-    // function emailSendCode() {
-    //     console.log($("#email").val());
-    //     let email = encodeURIComponent($("#email").val());
-    //
-    //     $.ajax({
-    //         url: '/send-mail?email=' + email,
-    //         type: 'GET'
-    //     }).done((res) => {
-    //         console.log("Res: " + JSON.stringify(res));
-    //         emailCode = res.body;
-    //         console.log("보낸 코드: " + emailCode);  // 응답 받은 인증 코드
-    //         showModal();
-    //     }).fail((res) => {
-    //         alert("오류 발생: " + JSON.stringify(res));
-    //     });
-    // }
-
-    // // 전역 변수 선언
-    // let emailCode;
-    //
-    // function emailSendCode() {
-    //     console.log($("#email").val());
-    //     let email = encodeURIComponent($("#email").val());
-    //
-    //     $.ajax({
-    //         url: '/send-mail?email=' + email,
+    //         url: '/check-email-code?emailCode=' + checkEmailCode,
     //         type: 'GET'
     //
-    //     }).done((res) => {
-    //          console.log("Res " + JSON.stringify(res));
-    //         emailCode = res.body;
-    //         console.log("보낸 코드 " + emailCode);
-    //         showModal();
+    //     }).done((res)=>{
+    //         if (res.body) {
+    //             Swal.fire({
+    //                 title: "인증이 완료되었습니다.",
+    //                 icon: "success",
+    //                 button: "확인"
+    //             });
+    //             $('#authModal').css('display', 'none');
+    //             isEmailConfirmed = true; // 인증이 완료되었으므로 true로 설정
+    //
+    //             // Hidden input field에 값을 설정하여 서버로 전송될 수 있게 합니다.
+    //             $('#isEmailConfirmed').val('true');
+    //
+    //         } else {
+    //             Swal.fire({
+    //                 title: "인증번호를 확인해주세요",
+    //                 icon: "warning",
+    //                 confirmButtonText: "확인"
+    //             });
+    //
+    //             $('#authModal').css('display', 'block');
+    //         }
     //
     //     }).fail((res) => {
     //         alert("오류");
     //     });
     //
-    // }
+    // });
 
+    // 인증번호 확인 로직 끝
+
+    //이메일을 다른걸로 바꾸면 isEmailConfirmed 값을 다시 false로 바꿔줘야할 것 같음
+    $("#email").on("input", function () {
+        isEmailConfirmed = false;
+        // console.log("isEmailConfirmed " + isEmailConfirmed);
+    });
 
     <!-- username 중복 체크 -->
     // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
@@ -310,34 +267,124 @@
 
     // 이메일 인증 안되면 막기 + 비번이 다르면 form 제출 못하게 막아놓음
     $("#joinForm").on("submit", function (e) {
+        // 폼 막기
+        e.preventDefault();
+
+        // 이메일 인증 여부 확인
+        if (!isEmailConfirmed) {
+            swal({
+                text: "이메일 인증이 필요합니다.",
+                icon: "warning",
+                button: "확인"
+            });
+            return; // 이메일 인증이 안된 경우 폼 제출 막기
+        }
 
         // 패스워드 유효성 검사
         let password = $("#password").val();
-        //console.log("패스워드 = " + password);
-
         let confirmPassword = $("#same-password").val();
-        //console.log("확인용 = " + confirmPassword);
 
-        if (password !== confirmPassword) {
-            e.preventDefault();
-
+        if (password !== confirmPassword || confirmPassword === "") {
             swal({
                 text: "비밀번호를 확인해주세요",
                 icon: "warning",
                 button: "확인"
             });
-
-        } else if (confirmPassword === "") {
-            e.preventDefault();
-
-            swal({
-                text: "비밀번호를 확인해주세요",
-                icon: "warning",
-                button: "확인"
+        } else {
+            // AJAX 요청으로 폼 제출
+            $.ajax({
+                url: $(this).attr("action"), // "/join"
+                type: $(this).attr("method"), // "POST"
+                data: $(this).serialize(), // 폼 데이터 직렬화
+                success: function (response) {
+                    if (response.body === 200) {
+                        // 성공 시 메인 페이지로 리다이렉트
+                        window.location.href = "/"; // 리다이렉트할 메인 페이지 URL
+                    } else {
+                        swal({
+                            text: response.message || "회원가입에 실패했습니다.",
+                            icon: "warning",
+                            button: "확인"
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        text: "오류가 발생했습니다. 다시 시도해 주세요.",
+                        icon: "error",
+                        button: "확인"
+                    });
+                }
             });
         }
-        // 패스워드 유효성 검사
     });
+
+
+    // $("#joinForm").on("submit", function (e) {
+    //     // 폼 막기
+    //     e.preventDefault();
+    //
+    //     // 이메일 인증 여부 확인
+    //     if (!isEmailConfirmed) {
+    //         swal({
+    //             text: "이메일 인증이 필요합니다.",
+    //             icon: "warning",
+    //             button: "확인"
+    //         });
+    //         return; // 이메일 인증이 안된 경우 폼 제출 막기
+    //     }
+    //
+    //     // 패스워드 유효성 검사
+    //     let password = $("#password").val();
+    //     let confirmPassword = $("#same-password").val();
+    //
+    //     if (password !== confirmPassword || confirmPassword === "") {
+    //         swal({
+    //             text: "비밀번호를 확인해주세요",
+    //             icon: "warning",
+    //             button: "확인"
+    //         });
+    //     } else {
+    //         // 폼을 제출
+    //         this.submit();
+    //     }
+    // });
+
+    // $("#joinForm").on("submit", function (e) {
+    //     //폼 막기
+    //     e.preventDefault();
+    //
+    //     console.log("1");
+    //
+    //
+    //
+    //     // 패스워드 유효성 검사
+    //     let password = $("#password").val();
+    //     //console.log("패스워드 = " + password);
+    //
+    //     let confirmPassword = $("#same-password").val();
+    //     //console.log("확인용 = " + confirmPassword);
+    //
+    //     if (password !== confirmPassword) {
+    //         e.preventDefault();
+    //
+    //         swal({
+    //             text: "비밀번호를 확인해주세요",
+    //             icon: "warning",
+    //             button: "확인"
+    //         });
+    //
+    //     } else if (confirmPassword === "") {
+    //         e.preventDefault();
+    //
+    //         swal({
+    //             text: "비밀번호를 확인해주세요",
+    //             icon: "warning",
+    //             button: "확인"
+    //         });
+    //     }
+    //     // 패스워드 유효성 검사
+    // });
 
 
 

@@ -18,19 +18,43 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    public ResponseEntity<ApiUtil<Integer>> join(@ModelAttribute UserRequest.JoinDTO reqDTO) {
+    public ResponseEntity<ApiUtil<Integer>> join(@ModelAttribute UserRequest.JoinDTO reqDTO, HttpSession session) {
         // 이메일 인증 여부 확인
         if (reqDTO.getIsEmailConfirmed() == null || !reqDTO.getIsEmailConfirmed()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiUtil<>(HttpStatus.BAD_REQUEST.value(), "이메일 인증이 필요합니다."));
+        } else {
+            // 회원가입 로직 실행
+            User sessionUser = userService.join(reqDTO);
+            if (sessionUser == null) {
+                System.out.println("회원가입 실패: sessionUser가 null입니다.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ApiUtil<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입에 실패했습니다."));
+            }
+
+            // 세션에 사용자 정보 저장
+            session.setAttribute("sessionUser", sessionUser);
+            System.out.println("세션 설정 완료: " + sessionUser); // 디버깅 로그
+
+            // 로그인 후 메인 페이지로 리다이렉트 확인
+            return ResponseEntity.ok(new ApiUtil<>(200));
         }
-
-        User sessionUser = userService.join(reqDTO);
-
-        // 회원가입 후 바로 로그인
-        session.setAttribute("sessionUser", sessionUser);
-        return ResponseEntity.ok(new ApiUtil<>(200));
     }
+
+//    @PostMapping("/join")
+//    public ResponseEntity<ApiUtil<Integer>> join(@ModelAttribute UserRequest.JoinDTO reqDTO) {
+//        // 이메일 인증 여부 확인
+//        if (reqDTO.getIsEmailConfirmed() == null || !reqDTO.getIsEmailConfirmed()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(new ApiUtil<>(HttpStatus.BAD_REQUEST.value(), "이메일 인증이 필요합니다."));
+//        } else{
+//            User sessionUser = userService.join(reqDTO);
+//
+//            // 회원가입 후 바로 로그인
+//            session.setAttribute("sessionUser", sessionUser);
+//            return ResponseEntity.ok(new ApiUtil<>(200));
+//        }
+//    }
 
     //회원가입폼
     @GetMapping("/join-form")

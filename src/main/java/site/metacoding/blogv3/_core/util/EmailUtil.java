@@ -34,14 +34,14 @@ public class EmailUtil {
             e.printStackTrace();
         }
 
-//        // 내가 설정한 이메일로 날아감
-//        sender.send(message);
+        // 내가 설정한 이메일로 날아감
+        sender.send(message);
 
-        try {
-            sender.send(message);
-        } catch (MailException e) {
-            e.printStackTrace(); // 실패 시 처리
-        }
+//        try {
+//            sender.send(message);
+//        } catch (MailException e) {
+//            e.printStackTrace(); // 실패 시 처리
+//        }
 
     }
 
