@@ -23,8 +23,17 @@
                     <input class="my_auth_form_box_input" id="email" type="email" name="email" placeholder="이메일" maxlength="60"
                            value="ssar1@nate.com"
                            required/>
+
                     <button class="btn btn-outline-info btn-sm" type="button" id="emailAuthButton">인증하기</button>
-                    <!--                <button class="btn btn-outline-success btn-sm" type="submit" onclick="emailCheck()">인증하기</button>-->
+                    <!--
+
+                                  <button class="btn btn-outline-success btn-sm" type="submit"
+                                  onclick="emailCheck()">인증하기</button>
+
+                   <a href="javascript:openModal('modal1');" class="close">(자세히보기)</a>
+
+
+                                  -->
                 </div>
 
                 <button type="submit" id="joinBtn" class="my_secondary_btn">회원가입</button>
@@ -54,6 +63,8 @@
 <script>
 
     // 모달창을 보이게 하는 함수
+
+
     function showModal() {
         $('#authCodeText').val('');
         $('#authModal').css('display', 'block');
@@ -70,6 +81,10 @@
         // 인증 코드 입력란 초기화
     });
     // 모달창 스크립트 끝
+
+
+
+
 
     <!-- 이메일 주소로 메일 보내기 -->
     function emailSendCode() {
