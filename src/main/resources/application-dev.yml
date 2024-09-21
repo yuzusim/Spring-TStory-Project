@@ -12,6 +12,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: compilemate@gmail.com
+#    password: wfeobiuhpmccwgrq
     password: w f e o bi u h p m c c w g r q
     properties:
       mail:

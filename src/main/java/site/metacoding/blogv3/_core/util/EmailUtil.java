@@ -3,6 +3,7 @@ package site.metacoding.blogv3._core.util;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,14 @@ public class EmailUtil {
             e.printStackTrace();
         }
 
-        // 내가 설정한 이메일로 날아감
-        sender.send(message);
+//        // 내가 설정한 이메일로 날아감
+//        sender.send(message);
+
+        try {
+            sender.send(message);
+        } catch (MailException e) {
+            e.printStackTrace(); // 실패 시 처리
+        }
 
     }
 
@@ -42,7 +49,8 @@ public class EmailUtil {
     private String getCertificationMessage(String body) {
 
         String certificationMessage = "";
-        certificationMessage += "<h1 style='text-align: center;'>[Tistory 인증메일]</h1>";
+        certificationMessage += "<h1 style='text-align: center;'>[Jistory 인증메일]</h1>";
+        certificationMessage += "<h4 style='text-align: center;'>아래 숫자를 입력하고 회원가입을 완료해 주세요!</h4>";
         certificationMessage += "<h3 style='text-align: center;'>" +
                 "인증코드 : <strong style='font-size: 32px; letter-spacing: 8px;'>" + body + "</strong></h3>";
 

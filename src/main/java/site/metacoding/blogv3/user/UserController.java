@@ -58,22 +58,47 @@ public class UserController {
     }
 
     //이메일인증
-//    @GetMapping("/send-mail")
-//    public ResponseEntity<?> sendMail(String email) {
-//        String emailCode = userService.mailCheck(email);
-//        System.out.println("emailCode = " + emailCode);
-//
-//        return ResponseEntity.ok(new ApiUtil<>(emailCode));
-//
-//
-//    }
-
     @GetMapping("/send-mail")
     public ResponseEntity<?> sendMail(String email) {
         String emailCode = userService.mailCheck(email);
+        System.out.println("email =" + email);
         System.out.println("Generated emailCode = " + emailCode);
+
+        session.setAttribute("emailCode", emailCode);
         return ResponseEntity.ok(new ApiUtil<>(emailCode));
     }
+
+    @GetMapping("/check-email-code")
+    public ResponseEntity<?> checkEmailCode(String emailCode) {
+        String sessionEmailCode = (String) session.getAttribute("emailCode");
+
+        // 디버깅을 위한 로그 출력
+        System.out.println("Session Email Code: " + sessionEmailCode);
+        System.out.println("User Input Email Code: " + emailCode);
+
+        if (sessionEmailCode == null) {
+            return ResponseEntity.ok(new ApiUtil<>(false));
+        }
+
+        if (sessionEmailCode.equals(emailCode)) {
+            return ResponseEntity.ok(new ApiUtil<>(true));
+        } else {
+            return ResponseEntity.ok(new ApiUtil<>(false));
+        }
+    }
+
+
+//    @GetMapping("/check-email-code")
+//    public ResponseEntity<?> checkEmailCode(String emailCode) {
+//        String sessionEmailCode = (String) session.getAttribute("emailCode");
+//        System.out.println("sessionEmailCode = " + sessionEmailCode);
+//
+//        if (sessionEmailCode != null && sessionEmailCode.equals(emailCode)) {
+//            return ResponseEntity.ok(new ApiUtil<>(true));
+//        } else {
+//            return ResponseEntity.ok(new ApiUtil<>(false));
+//        }
+//    }
 
 
     //유저네임중복체크

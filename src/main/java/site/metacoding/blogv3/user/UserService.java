@@ -1,5 +1,6 @@
 package site.metacoding.blogv3.user;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class UserService {
     private final UserJPARepository userJPARepo;
     //private final JavaMailSender sender;
     private final EmailUtil emailUtil;
+    private HttpSession session;
 
     //로그인(조회라 트랜젝션 안 붙여도 됨!)
     public User login(UserRequest.LoginDTO reqDTO) {
@@ -110,9 +112,9 @@ public class UserService {
             code.append(randomNum); // 숫자 추가
         }
 
-        System.out.println("Generated Code: " + code.toString()); // 생성된 코드 출력
+        System.out.println("Generated Code: " + code); // 생성된 코드 출력
         // 이메일로 인증 코드 전송
-        String body = "귀하의 인증 코드는 " + code.toString() + "입니다.";
+        String body = "귀하의 인증 코드는 " + code + "입니다.";
         emailUtil.sendEmail(email, subject, body);
 
         return code.toString(); // 최종 랜덤 코드 반환
