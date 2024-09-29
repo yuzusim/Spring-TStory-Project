@@ -1,4 +1,4 @@
--- 유저 더미
+-- 유저 더미 --
 INSERT INTO user_tb (username, password, email, created_at)
 VALUES ('ssar12', 'zheld8282@', 'ssar@nate.com', now());
 INSERT INTO user_tb (username, password, email, created_at)
@@ -21,3 +21,17 @@ INSERT INTO user_tb (username, password, email, created_at)
 VALUES ('soso', '1234', 'soso@nate.com', now());
 INSERT INTO user_tb (username, password, email, created_at)
 VALUES ('code5', 'dirn111dnl@', 'codingstory2@gmail.com', now());
+-- 유저 더미 끝 --
+
+-- 카테고리 더미 --
+INSERT INTO category_tb (category_name, user_id, created_at)
+VALUES ('여행', '1', now());
+INSERT INTO category_tb (category_name, user_id, created_at)
+VALUES ('동물', '1', now());
+INSERT INTO category_tb (category_name, user_id, created_at)
+VALUES ('동물/여행', '2', now());
+INSERT INTO category_tb (category_name, user_id, created_at)
+VALUES ('음식', '2', now());
+INSERT INTO category_tb (category_name, user_id, created_at)
+VALUES ('다이어트', '3', now());
+-- 카테고리 더미 끝 --
