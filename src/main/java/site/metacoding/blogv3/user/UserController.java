@@ -41,21 +41,6 @@ public class UserController {
         }
     }
 
-//    @PostMapping("/join")
-//    public ResponseEntity<ApiUtil<Integer>> join(@ModelAttribute UserRequest.JoinDTO reqDTO) {
-//        // 이메일 인증 여부 확인
-//        if (reqDTO.getIsEmailConfirmed() == null || !reqDTO.getIsEmailConfirmed()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(new ApiUtil<>(HttpStatus.BAD_REQUEST.value(), "이메일 인증이 필요합니다."));
-//        } else{
-//            User sessionUser = userService.join(reqDTO);
-//
-//            // 회원가입 후 바로 로그인
-//            session.setAttribute("sessionUser", sessionUser);
-//            return ResponseEntity.ok(new ApiUtil<>(200));
-//        }
-//    }
-
     //회원가입폼
     @GetMapping("/join-form")
     public String joinForm() {
@@ -111,20 +96,6 @@ public class UserController {
             return ResponseEntity.ok(new ApiUtil<>(false));
         }
     }
-
-
-//    @GetMapping("/check-email-code")
-//    public ResponseEntity<?> checkEmailCode(String emailCode) {
-//        String sessionEmailCode = (String) session.getAttribute("emailCode");
-//        System.out.println("sessionEmailCode = " + sessionEmailCode);
-//
-//        if (sessionEmailCode != null && sessionEmailCode.equals(emailCode)) {
-//            return ResponseEntity.ok(new ApiUtil<>(true));
-//        } else {
-//            return ResponseEntity.ok(new ApiUtil<>(false));
-//        }
-//    }
-
 
     //유저네임중복체크
     @GetMapping("/username-check")
