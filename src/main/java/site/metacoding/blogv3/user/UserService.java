@@ -120,30 +120,6 @@ public class UserService {
         return code.toString(); // 최종 랜덤 코드 반환
     }
 
-
-
-//    public String mailCheck(String email) {
-//        // 타이틀
-//        String subject = "[Tistroy 회원가입 인증메일입니다]";
-//
-//
-//            Random random = new Random();
-//            int randomNum;
-//            StringBuilder code = new StringBuilder();
-////            String randomNumStr = ""; // 사용할 문자 집합
-//
-//            // 6자리 랜덤 숫자 생성
-//            for (int i = 0; i < 6; i++) {
-//                randomNum = random.nextInt(10); // 0부터 9까지 랜덤 숫자 생성
-//                code.append(randomNum); // 숫자 추가
-//            }
-//
-////        emailUtil.sendEmail( subject);
-//
-//        System.out.println("Generated Code: " + code);
-//            return code.toString(); // 최종 랜덤 코드 반환
-//        }
-
 }
 
 

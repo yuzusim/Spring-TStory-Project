@@ -81,22 +81,23 @@ public class UserController {
         return "user/passwordResetForm";
     }
 
-    //이메일인증
+    //이메일 인증번호 보내는 메소드
     @GetMapping("/send-mail")
     public ResponseEntity<?> sendMail(String email) {
         String emailCode = userService.mailCheck(email);
         System.out.println("email =" + email);
-        System.out.println("Generated emailCode = " + emailCode);
+//        System.out.println("Generated emailCode = " + emailCode);
 
         session.setAttribute("emailCode", emailCode);
         return ResponseEntity.ok(new ApiUtil<>(emailCode));
     }
 
+    // 이메일 인증번호 일치 여부 확인 메소드
     @GetMapping("/check-email-code")
     public ResponseEntity<?> checkEmailCode(String emailCode) {
         String sessionEmailCode = (String) session.getAttribute("emailCode");
 
-        // 디버깅을 위한 로그 출력
+        // 디버깅을 로그 출력
         System.out.println("Session Email Code: " + sessionEmailCode);
         System.out.println("User Input Email Code: " + emailCode);
 

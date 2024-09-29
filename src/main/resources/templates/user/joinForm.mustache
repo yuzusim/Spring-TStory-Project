@@ -23,23 +23,11 @@
                     <input class="my_auth_form_box_input" id="email" type="email" name="email" placeholder="이메일" maxlength="60"
                            value="compilemate@gmail.com"
                            required/>
-
-<!--                    <a href="javascript:openModal('modal1');" class="close">(자세히보기)</a>-->
                     <button class="btn btn-outline-info btn-sm" type="button" id="emailAuthButton">인증하기</button>
-                    <!--
-
-                                  <button class="btn btn-outline-success btn-sm" type="submit"
-                                  onclick="emailCheck()">인증하기</button>
-
-                   <a href="javascript:openModal('modal1');" class="close">(자세히보기)</a>
-
-
-                                  -->
                 </div>
 
-                <!-- 여기에 hidden input을 추가하세요 -->
+                <!-- isEmailConfirmed hidden input을 추가 -->
                 <input type="hidden" id="isEmailConfirmed" name="isEmailConfirmed" value="false">
-
                 <button type="submit" id="joinBtn" class="my_secondary_btn">회원가입</button>
             </form>
 
@@ -66,14 +54,20 @@
 
 <script>
 
-
+    <!--모달창 스크립트 -->
     function showModal() {
-        $('#authCodeText').val('');
-        $('#authModal').css('display', 'block');
+        $('#authCodeText').val(''); // 입력 필드 초기화
+        // $('#authCodeText').hide(); // 인증번호 입력 필드 숨기기
+        // $('#confirmBtn').hide();    // 확인 버튼 숨기기
+        $('#loadingSpinner').show(); // 로딩 스피너 보이기
+        $('#authModal').css('display', 'block'); // 모달 창 보이기
     }
 
     // "인증하기" 버튼 클릭 시 이메일로 인증번호 보내기 모달창 보이기
     $('#emailAuthButton').on('click', function () {
+        // 모달창을 먼저 띄우기
+        showModal();
+        // 이메일 인증 코드를 서버에 요청하기
         emailSendCode();
     });
 
@@ -82,14 +76,11 @@
         $('#authModal').css('display', 'none');
         // 인증 코드 입력란 초기화
     });
-    // 모달창 스크립트 끝
+    <!--모달창 스크립트 끝 -->
 
-
-
-
-
-    <!-- 이메일 주소로 메일 보내기 -->
+    // 이메일 주소로 메일 보내기
     function emailSendCode() {
+        //console.log($("#email").val());
         let email = encodeURIComponent($("#email").val());
 
         $.ajax({
@@ -98,14 +89,14 @@
 
         }).done((res) => {
             console.log("Response:", res);
-            emailCode = res.body;
+            emailCode = res.body; // 서버에서 받은 인증 코드를 저장
             console.log("Received code:", emailCode);
-            showModal();
+            showModal(); // 인증 코드 입력 모달을 보여줌
         }).fail((res) => {
             alert("오류");
         });
     }
-
+    // 이메일 주소로 메일 보내기 끝
 
     // 인증번호 확인 로직
     let isEmailConfirmed = false;
@@ -137,133 +128,13 @@
             alert("오류");
         });
     });
-
-
-    // $("#confirmBtn").click(function () {
-    //
-    //     let checkEmailCode = $("#authCodeText").val();
-    //     // console.log("입력 코드 " + checkCode);
-    //
-    //     $.ajax({
-    //         url: '/check-email-code?emailCode=' + checkEmailCode,
-    //         type: 'GET'
-    //
-    //     }).done((res)=>{
-    //         if (res.body) {
-    //             Swal.fire({
-    //                 title: "인증이 완료되었습니다.",
-    //                 icon: "success",
-    //                 button: "확인"
-    //             });
-    //             $('#authModal').css('display', 'none');
-    //             isEmailConfirmed = true; // 인증이 완료되었으므로 true로 설정
-    //
-    //             // Hidden input field에 값을 설정하여 서버로 전송될 수 있게 합니다.
-    //             $('#isEmailConfirmed').val('true');
-    //
-    //         } else {
-    //             Swal.fire({
-    //                 title: "인증번호를 확인해주세요",
-    //                 icon: "warning",
-    //                 confirmButtonText: "확인"
-    //             });
-    //
-    //             $('#authModal').css('display', 'block');
-    //         }
-    //
-    //     }).fail((res) => {
-    //         alert("오류");
-    //     });
-    //
-    // });
-
     // 인증번호 확인 로직 끝
 
-    //이메일을 다른걸로 바꾸면 isEmailConfirmed 값을 다시 false로 바꿔줘야할 것 같음
+    // 이메일을 다른걸로 바꾸면 isEmailConfirmed 값을 다시 false로 바꿔줘야할 것 같음
     $("#email").on("input", function () {
         isEmailConfirmed = false;
         // console.log("isEmailConfirmed " + isEmailConfirmed);
     });
-
-    <!-- username 중복 체크 -->
-    // 비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
-    $("#username").on('keyup', _.debounce(function () {
-        console.log("Debounced event triggered"); // 디바운스 후 로그 출력
-        // 입력된 비밀번호 값을 가져와서 콘솔에 출력
-        console.log($(this).val());
-        let username = $(this).val();
-
-        $.ajax({
-            url: '/username-check?username=' + username,
-            type: 'GET'
-
-        }).done((res) => {
-            console.log("Res " + JSON.stringify(res));
-
-            // 응답 구조에 따라 확인
-            if (username === "") {
-                // 입력란이 빈 경우 텍스트 숨기기
-                $("#usernameError, #usernameSuccess").addClass("my_hidden").hide();
-            } else if (res.body === "USER_EXIST") {
-                showError(); // 에러 메시지 표시
-            } else if (res.body === "USER_NO_EXIST") {
-                showSuccess(); // 성공 메시지 표시
-            }
-        }).fail((res) => {
-            alert("오류가 발생했습니다. 다시 시도해 주세요.");
-        });
-    }, 300));
-
-
-    // 에러 메시지를 표시하고 성공 메시지를 숨기는 함수
-    function showError() {
-        $("#usernameError").removeClass("my_hidden").show();
-        $("#usernameSuccess").addClass("my_hidden").hide();
-    }
-
-    // 성공 메시지를 표시하고 에러 메시지를 숨기는 함수
-    function showSuccess() {
-        $("#usernameSuccess").removeClass("my_hidden").show();
-        $("#usernameError").addClass("my_hidden").hide();
-    }
-
-    <!-- username 중복 체크 끝-->
-
-    <!-- 비밀번호 동일 체크 -->
-    $("#same-password").on("input", function () {
-        let password = $("#password").val(); // 비밀번호 입력값
-        //console.log("패스워드 = " + password);
-
-        let confirmPassword = $("#same-password").val(); // 비밀번호 확인 입력값
-        //console.log("확인용 = " + confirmPassword);
-
-
-        if (password === confirmPassword) {
-            $("#successText").show();
-            $("#errorText").hide();
-            $("#same-password").removeClass("error").addClass("correct");
-            $("#joinBtn").css({
-                "background-color": "rgb(255, 85, 68)",
-                "color": "rgba(255,255,255,.8)"
-            });
-
-
-        } else if (confirmPassword === "") {
-            $("#successText").hide();
-            $("#errorText").hide();
-
-        } else {
-            $("#successText").hide();
-            $("#errorText").show();
-            $("#same-password").removeClass("correct").addClass("error");
-
-            $("#joinBtn").css({
-                "background-color": "",
-                "color": ""
-            });
-        }
-    });
-    <!-- 비밀번호 동일 체크 끝-->
 
     // 이메일 인증 안되면 막기 + 비번이 다르면 form 제출 못하게 막아놓음
     $("#joinForm").on("submit", function (e) {
@@ -320,75 +191,85 @@
     });
 
 
-    // $("#joinForm").on("submit", function (e) {
-    //     // 폼 막기
-    //     e.preventDefault();
-    //
-    //     // 이메일 인증 여부 확인
-    //     if (!isEmailConfirmed) {
-    //         swal({
-    //             text: "이메일 인증이 필요합니다.",
-    //             icon: "warning",
-    //             button: "확인"
-    //         });
-    //         return; // 이메일 인증이 안된 경우 폼 제출 막기
-    //     }
-    //
-    //     // 패스워드 유효성 검사
-    //     let password = $("#password").val();
-    //     let confirmPassword = $("#same-password").val();
-    //
-    //     if (password !== confirmPassword || confirmPassword === "") {
-    //         swal({
-    //             text: "비밀번호를 확인해주세요",
-    //             icon: "warning",
-    //             button: "확인"
-    //         });
-    //     } else {
-    //         // 폼을 제출
-    //         this.submit();
-    //     }
-    // });
 
-    // $("#joinForm").on("submit", function (e) {
-    //     //폼 막기
-    //     e.preventDefault();
-    //
-    //     console.log("1");
-    //
-    //
-    //
-    //     // 패스워드 유효성 검사
-    //     let password = $("#password").val();
-    //     //console.log("패스워드 = " + password);
-    //
-    //     let confirmPassword = $("#same-password").val();
-    //     //console.log("확인용 = " + confirmPassword);
-    //
-    //     if (password !== confirmPassword) {
-    //         e.preventDefault();
-    //
-    //         swal({
-    //             text: "비밀번호를 확인해주세요",
-    //             icon: "warning",
-    //             button: "확인"
-    //         });
-    //
-    //     } else if (confirmPassword === "") {
-    //         e.preventDefault();
-    //
-    //         swal({
-    //             text: "비밀번호를 확인해주세요",
-    //             icon: "warning",
-    //             button: "확인"
-    //         });
-    //     }
-    //     // 패스워드 유효성 검사
-    // });
-    //
+    <!-- username 중복 체크 -->
+    //비밀번호 입력 필드에 keyup 이벤트 핸들러 추가
+    $("#username").on('keyup', _.debounce(function () {
+        console.log("Debounced event triggered"); // 디바운스 후 로그 출력
+        // 입력된 비밀번호 값을 가져와서 콘솔에 출력
+        console.log($(this).val());
+        let username = $(this).val();
+
+        $.ajax({
+            url: '/username-check?username=' + username,
+            type: 'GET'
+
+        }).done((res) => {
+            console.log("Res " + JSON.stringify(res));
+
+            // 응답 구조에 따라 확인
+            if (username === "") {
+                // 입력란이 빈 경우 텍스트 숨기기
+                $("#usernameError, #usernameSuccess").addClass("my_hidden").hide();
+            } else if (res.body === "USER_EXIST") {
+                showError(); // 에러 메시지 표시
+            } else if (res.body === "USER_NO_EXIST") {
+                showSuccess(); // 성공 메시지 표시
+            }
+        }).fail((res) => {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        });
+    }, 300));
 
 
+    // 에러 메시지를 표시하고 성공 메시지를 숨기는 함수
+    function showError() {
+        $("#usernameError").removeClass("my_hidden").show();
+        $("#usernameSuccess").addClass("my_hidden").hide();
+    }
 
+    // 성공 메시지를 표시하고 에러 메시지를 숨기는 함수
+    function showSuccess() {
+        $("#usernameSuccess").removeClass("my_hidden").show();
+        $("#usernameError").addClass("my_hidden").hide();
+    }
+    <!-- username 중복 체크 끝-->
+
+    <!-- 비밀번호 동일 체크 -->
+    $("#same-password").on("input", function () {
+        let password = $("#password").val(); // 비밀번호 입력값
+        //console.log("패스워드 = " + password);
+
+        let confirmPassword = $("#same-password").val(); // 비밀번호 확인 입력값
+        //console.log("확인용 = " + confirmPassword);
+
+
+        if (password === confirmPassword) {
+            $("#successText").show();
+            $("#errorText").hide();
+            $("#same-password").removeClass("error").addClass("correct");
+            $("#joinBtn").css({
+                "background-color": "rgb(255, 85, 68)",
+                "color": "rgba(255,255,255,.8)"
+            });
+
+
+        } else if (confirmPassword === "") {
+            $("#successText").hide();
+            $("#errorText").hide();
+
+        } else {
+            $("#successText").hide();
+            $("#errorText").show();
+            $("#same-password").removeClass("correct").addClass("error");
+
+            $("#joinBtn").css({
+                "background-color": "",
+                "color": ""
+            });
+        }
+    });
+    <!-- 비밀번호 동일 체크 끝-->
 </script>
 
 {{>/layout/footer}}
