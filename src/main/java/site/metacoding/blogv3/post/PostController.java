@@ -1,9 +1,12 @@
 package site.metacoding.blogv3.post;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -13,7 +16,7 @@ public class PostController {
     private final HttpSession session;
 
     @GetMapping("/")
-    public String main() {
+    public String main(HttpServletRequest request) {
 
         return "main";
     }
@@ -35,5 +38,6 @@ public class PostController {
 
         return "post/writeForm";
     }
+
 
 }

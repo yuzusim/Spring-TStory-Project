@@ -23,6 +23,7 @@ public class UserService {
 
     //로그인(조회라 트랜젝션 안 붙여도 됨!)
     public User login(UserRequest.LoginDTO reqDTO) {
+        System.out.println("login reqDTO = " + reqDTO);
         User sessionUser = userJPARepo.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
                 .orElseThrow(() -> new Exception401("아이디 혹은 비밀번호를 확인해주세요.")); // orElseThrow 값이 null이면 이라는 뜻
         return sessionUser; // 세션에 저장

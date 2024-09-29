@@ -14,19 +14,22 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final HttpSession session;
 
-    @PostMapping("/category/save")
+
+    @PostMapping("/s/category/save")
     public String save(String categoryName) {
         System.out.println("categoryName = " + categoryName);
         User user = (User) session.getAttribute("sessionUser");
-//        categoryService.save(categoryName, user.getId());
+        categoryService.save(categoryName, user.getId());
 
-        return "redirect:/category/write-form";
+        return "redirect:/s/category/write-form";
+
     }
 
-    @GetMapping("/category/write-form")
+    @GetMapping("/s/category/write-form")
     public String writeForm() {
 
         return "category/writeForm";
     }
 
 }
+

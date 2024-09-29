@@ -155,7 +155,10 @@
 
         // 패스워드 유효성 검사
         let password = $("#password").val();
+        // console.log("패스워드 = " + password);
+
         let confirmPassword = $("#same-password").val();
+        // console.log("확인용 = " + confirmPassword);
 
         if (password !== confirmPassword || confirmPassword === "") {
             swal({
@@ -190,8 +193,9 @@
                 }
             });
         }
+        // 패스워드 유효성 검사 끝
     });
-
+    // 이메일 인증 안되면 막기 + 비번이 다르면 form 제출 못하게 막아놓음 끝
 
     <!-- username 중복 체크 -->
     //비밀번호 입력 필드에 keyup 이벤트 핸들러 추가

@@ -2,10 +2,12 @@ package site.metacoding.blogv3.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import site.metacoding.blogv3._core.util.ApiUtil;
 
@@ -54,6 +56,17 @@ public class UserController {
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@Valid @RequestBody UserRequest.LoginDTO reqDTO, Errors errors) {
+//        System.out.println("requestDTO 1 = " + reqDTO);
+//
+//        User sessionUser = userService.login(reqDTO);
+//        session.setAttribute("sessionUser", sessionUser);
+//
+//        return ResponseEntity.ok(new ApiUtil<>(sessionUser));
+////        return "redirect:/";
+//    }
 
     @GetMapping("/login-form")
     public String loginForm() {
