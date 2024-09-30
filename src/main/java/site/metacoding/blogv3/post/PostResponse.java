@@ -7,4 +7,14 @@ import java.util.List;
 
 public class PostResponse {
 
+    @Data
+    public static class Post{
+
+    }
+
+    @Data
+    public static class WriteFormDTO {
+
+    }
+
 }

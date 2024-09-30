@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import site.metacoding.blogv3.user.User;
 
 import java.util.List;
 
@@ -33,8 +34,10 @@ public class PostController {
         return "post/list";
     }
 
+
     @GetMapping("/post/write-form")
-    public String postWriteForm() {
+    public String postWriteForm(HttpServletRequest request) {
+        User user = (User) session.getAttribute("sessionUser");
 
         return "post/writeForm";
     }
