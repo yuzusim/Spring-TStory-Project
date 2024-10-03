@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import site.metacoding.blogv3.category.Category;
 import site.metacoding.blogv3.user.User;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
     private String thumbnailFile; //섬네일
 
     @Transient
@@ -34,11 +38,12 @@ public class Post {
     private LocalDateTime createdAt;
 
     @Builder
-    public Post(Integer id, String title, String content, User user, String thumbnailFile, Boolean isPostOwner, LocalDateTime createdAt) {
+    public Post(Integer id, String title, String content, User user, Category category, String thumbnailFile, Boolean isPostOwner, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
+        this.category = category;
         this.thumbnailFile = thumbnailFile;
         this.isPostOwner = isPostOwner;
         this.createdAt = createdAt;
