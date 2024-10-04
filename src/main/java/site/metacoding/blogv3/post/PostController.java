@@ -35,9 +35,13 @@ public class PostController {
     }
 
 
-    @GetMapping("/post/write-form")
+    @GetMapping("/s/post/write-form")
     public String postWriteForm(HttpServletRequest request) {
         User user = (User) session.getAttribute("sessionUser");
+        PostResponse.WriteFormDTO writeFormDTOList = postService.writeform(user.getId());
+
+        request.setAttribute("model", writeFormDTOList);
+
 
         return "post/writeForm";
     }

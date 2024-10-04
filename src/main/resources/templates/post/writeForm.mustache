@@ -13,14 +13,15 @@
     <form id="hello" action="/s/post" method="post" enctype="multipart/form-data" onsubmit="return getQuill()">
         <div class="form-group">
             <select class="form-control" name="categoryId">
-
-                <option value="1">제목</option>
-
+                {{#model.categoryNameDTO}}
+                <option value="{{id}}">{{categoryName}}</option>
+                {{/model.categoryNameDTO}}
             </select>
         </div>
         <input type="text" placeholder="Enter Title" name="title" class="form-control">
 
 
+        <!-- 퀼 에디터 디자인 부분-->
         <div id="toolbar-container">
             <span class="ql-formats">
                 <select class="ql-font"></select>
