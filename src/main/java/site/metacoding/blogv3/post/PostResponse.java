@@ -5,6 +5,7 @@ import site.metacoding.blogv3.category.CategoryResponse;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostResponse {
 
@@ -20,7 +21,6 @@ public class PostResponse {
         public WriteFormDTO(List<CategoryResponse.CategoryNameDTO> categoryNameDTO) {
             this.categoryNameDTO = categoryNameDTO;
         }
-
 
     }
 

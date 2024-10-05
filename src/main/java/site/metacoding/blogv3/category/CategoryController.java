@@ -14,7 +14,6 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final HttpSession session;
 
-
     @PostMapping("/s/category/save")
     public String save(String categoryName) {
         System.out.println("categoryName = " + categoryName);
@@ -25,11 +24,10 @@ public class CategoryController {
 
     }
 
-    @GetMapping("/s/category/write-form")
+    @GetMapping("/category/write-form")
     public String writeForm() {
 
         return "category/writeForm";
     }
 
 }
-

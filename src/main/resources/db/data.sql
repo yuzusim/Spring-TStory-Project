@@ -28,10 +28,10 @@ INSERT INTO category_tb (category_name, user_id, created_at)
 VALUES ('여행', '1', now());
 INSERT INTO category_tb (category_name, user_id, created_at)
 VALUES ('동물', '1', now());
-INSERT INTO category_tb (category_name, user_id, created_at)
-VALUES ('동물/여행', '2', now());
-INSERT INTO category_tb (category_name, user_id, created_at)
-VALUES ('음식', '2', now());
+-- INSERT INTO category_tb (category_name, user_id, created_at)
+-- VALUES ('동물/여행', '2', now());
+-- INSERT INTO category_tb (category_name, user_id, created_at)
+-- VALUES ('음식', '2', now());
 INSERT INTO category_tb (category_name, user_id, created_at)
 VALUES ('다이어트', '3', now());
 -- 카테고리 더미 끝 --

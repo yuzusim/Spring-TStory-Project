@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import site.metacoding.blogv3.user.User;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class PostController {
         return "post/list";
     }
 
-
+    //게시글 쓰기 폼
     @GetMapping("/s/post/write-form")
     public String postWriteForm(HttpServletRequest request) {
         User user = (User) session.getAttribute("sessionUser");
@@ -42,6 +43,12 @@ public class PostController {
 
         request.setAttribute("model", writeFormDTOList);
 
+        // 카테고리 네임 비어 있는지 확인
+        if (writeFormDTOList.getCategoryNameDTO().isEmpty()) {
+            request.setAttribute("noCategory", true);
+        } else {
+            request.setAttribute("noCategory", false);
+        }
 
         return "post/writeForm";
     }

@@ -19,6 +19,10 @@ public class CategoryService {
 
     @Transactional
     public void save(String categoryName, Integer sessionUserId) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            throw new RuntimeException("카테고리 이름을 입력해주세요.");
+        }
+
         User sessionUser = userJPARepo.findById(sessionUserId)
                 .orElseThrow(() -> new RuntimeException("회원 정보가 존재하지 않습니다."));
 
