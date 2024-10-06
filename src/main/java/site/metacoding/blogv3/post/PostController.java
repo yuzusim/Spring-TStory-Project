@@ -30,8 +30,13 @@ public class PostController {
         return "post/detail";
     }
 
+    // 게시글 리스트
     @GetMapping("/post/list")
-    public String postList() {
+    public String postList(HttpServletRequest request) {
+        User user = (User) session.getAttribute("sessionUser");
+
+        List<PostResponse.ListDTO> listDTOs = postService.postList(user.getId());
+        request.setAttribute("model", listDTOs);
 
         return "post/list";
     }

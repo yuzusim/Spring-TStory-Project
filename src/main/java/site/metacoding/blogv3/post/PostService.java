@@ -17,6 +17,13 @@ public class PostService {
     private final UserJPARepository userJPARepo;
     private final CategoryJPARepository categoryJPARepo;
 
+    // 게시글 리스트
+    public List<PostResponse.ListDTO> postList(Integer sessionUserId){
+        List<PostResponse.ListDTO> postLists = postJPARepo.findByPostList(sessionUserId);
+        System.out.println("postLists"+ postLists);
+        return postLists;
+    }
+
     // 게시글 -> 카테고리 리스트
     @Transactional
     public PostResponse.WriteFormDTO writeform(Integer sessionUserId){
