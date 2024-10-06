@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import site.metacoding.blogv3.user.User;
 
@@ -33,6 +34,14 @@ public class PostController {
     public String postList() {
 
         return "post/list";
+    }
+
+    // 게시글 쓰기
+    @PostMapping("/s/post/save")
+    public String save(PostRequest.SaveDTO reqDTO){
+        System.out.println("Post SaveDTO"+ reqDTO);
+
+        return "redirect:/post/list";
     }
 
     //게시글 쓰기 폼

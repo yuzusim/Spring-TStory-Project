@@ -38,5 +38,16 @@
 
 </div>
 
+<script>
+    // text-overflow에서 이미지 제외
+    $(".content-wrapper").each(function () {
+        let contentHtml = $(this).html();
+        contentHtml = contentHtml.replace(/<img[^>]+>/g, '');
+        contentHtml = contentHtml.replace(/<iframe[^>]+>/g, '');
+        $(this).html(contentHtml);
+    });
+    // text-overflow에서 이미지 제외
+</script>
+
 
 {{>/layout/footer}}

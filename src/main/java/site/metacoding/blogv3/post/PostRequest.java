@@ -8,4 +8,13 @@ import site.metacoding.blogv3.user.User;
 
 public class PostRequest {
 
+    // 게시글 쓰기
+    @Data
+    public static class SaveDTO{
+        private String title;
+        private String content;
+        private Integer categoryId;
+        private MultipartFile thumbnailFile;
+    }
+
 }

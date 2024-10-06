@@ -8,7 +8,7 @@
 
 <div class="container">
 
-    <form id="hello" action="/s/post" method="post" enctype="multipart/form-data" onsubmit="return getQuill()">
+    <form id="postWriteForm" onsubmit="return getQuill()">
 <!--    <form id="postWriteForm" onsubmit="return getQuill()">-->
         <div class="form-group">
             <select class="form-control" id="categoryId" name="categoryId">
@@ -18,7 +18,7 @@
             </select>
         </div>
 
-        <input type="text" placeholder="Enter Title" name="title" class="form-control">
+        <input id="title" type="text" name="title" class="form-control" placeholder="Enter Title">
 
 
         <!-- 퀼 에디터 디자인 부분-->
@@ -68,11 +68,13 @@
         <!-- 퀼 에디터 디자인 부분-->
 
         <!--textarea 내용적는 부분-->
-        <div id="editor-container"></div>
-        <textarea name="content" id="content" class="my_hidden"></textarea>
+        <div id="editor-container">
+            <p>민경쏭과 채현쏭은 짱</p>
+        </div>
+
 
         <div class="form-control d-flex justify-content-end">
-            <div>섬네일 사진 등록 : <input type="file" name="thumnailFile"></div>
+            <div>섬네일 사진 등록 : <input id="thumbnailFile" type="file" name="thumbnailFile"></div>
         </div>
         <button type="submit" class="my_active_btn">글쓰기 등록</button>
     </form>
@@ -81,18 +83,8 @@
 </div>
 
 <script>
-    function getQuill() {
-        let quillContent = $("#editor-container .ql-editor").html();
-        $("#content").html(quillContent);
-        return true;
-    }
 
-
-</script>
-
-<!-- Include the Quill library -->
-
-<script>
+   // Quill 에디터의 설정 부분
     var quill = new Quill('#editor-container', {
         modules: {
             formula: true,
@@ -102,6 +94,7 @@
         placeholder: '게시물을 작성해주세요.',
         theme: 'snow'
     });
+   // Quill 에디터의 설정 부분
 
     // 카테고리가 없으면 alret창 뜨게
     let noCategory = {{noCategory}};
@@ -116,6 +109,58 @@
             window.location.href = "/s/category/write-form"; // 카테고리 생성 페이지로 리다이렉트
         });
     }
+   // 카테고리가 없으면 alret창 뜨게
+
+   // 게시글 쓰기
+   $("#postWriteForm").on("submit", function(e) {
+       e.preventDefault(); // 폼이 바로 제출되지 않도록 함
+
+       // 제목 값 읽기
+       let title = $("#title").val();
+       console.log("제목: " + title);
+
+       // 카테고리 아이디 값 읽기
+       let categoryId = $("#categoryId").val();
+       console.log("categoryId: " + categoryId);
+
+       // Quill 에디터 내용 읽기
+       let quillContent = quill.root.innerHTML;
+       console.log("Quill Content: " + quillContent); // HTML 태그와 함께 텍스트 출력 (글꼴, 색상 등 유지)
+
+       // 폼을 제출하는 로직 (필요하다면)
+       // this.submit();
+
+       // 폼 데이터 생성 (파일 및 텍스트 데이터 포함)
+       let formData = new FormData(this); // 현재 폼의 데이터를 가져옴
+       formData.append("content", quillContent); // Quill 에디터의 내용을 추가
+
+       $.ajax({
+           url: "/s/post/save",
+           data: formData,
+           contentType: false, // 기본적으로 jQuery는 데이터를 문자열로 처리하지만, 파일 전송을 위해 false로 설정
+           processData: false, // FormData를 사용할 때는 multipart/form-data를 사용하므로 false로 설정
+           type: 'POST'
+
+       }).done((res) => {
+           Swal.fire({
+               text: "게시글 등록이 완료되었습니다.",
+               icon: "success",
+               button: "확인"
+           }).then(() => {
+               window.location.href = "/post/list";
+           });
+
+       }).fail((res) => {
+           Swal.fire({
+               text: "게시글 등록 실패",
+               icon: "warning",
+               button: "확인"
+           });
+       });
+
+
+   });
+
 
 </script>
 
