@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import site.metacoding.blogv3.user.User;
 
 @RequiredArgsConstructor
@@ -21,10 +23,10 @@ public class CategoryController {
         categoryService.save(categoryName, user.getId());
 
         return "redirect:/s/category/write-form";
-
     }
 
-    @GetMapping("/category/write-form")
+
+    @GetMapping("/s/category/write-form")
     public String writeForm() {
 
         return "category/writeForm";

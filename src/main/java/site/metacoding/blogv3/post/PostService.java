@@ -17,16 +17,13 @@ public class PostService {
     private final UserJPARepository userJPARepo;
     private final CategoryJPARepository categoryJPARepo;
 
+    // 게시글 -> 카테고리 리스트
     @Transactional
     public PostResponse.WriteFormDTO writeform(Integer sessionUserId){
         User sessionUser = userJPARepo.findById(sessionUserId)
                 .orElseThrow(() -> new RuntimeException("회원 정보가 존재하지 않습니다."));
 
-//        private List<CategoryResponse.CategoryNameDTO> categoryNameDTO;
-//
-//        public WriteFormDTO(List<CategoryResponse.CategoryNameDTO> categoryNameDTO) {
-//            this.categoryNameDTO = categoryNameDTO;
-//        }
+        // categoryJPARepo에서 sessionUser.getId()로 유저의 카테고리 목록을 조회하여 categoryList에 담음
         List<CategoryResponse.CategoryNameDTO> categoryList = categoryJPARepo.findByUserId(sessionUser.getId());
         System.out.println("categoryList = " + categoryList);
 
@@ -35,7 +32,7 @@ public class PostService {
 //            System.out.println("No categories found for userId: " + sessionUser.getId());
 //        }
 
-
+        // categoryList를 사용하여 PostResponse.WriteFormDTO 객체를 생성하고, 이를 writeFormDTO 변수에 할당
         PostResponse.WriteFormDTO writeFormDTO = new PostResponse.WriteFormDTO(categoryList);
 
         return writeFormDTO;

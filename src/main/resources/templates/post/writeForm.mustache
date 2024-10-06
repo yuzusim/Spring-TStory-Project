@@ -13,11 +13,11 @@
         <div class="form-group">
             <select class="form-control" id="categoryId" name="categoryId">
                 {{#model.categoryNameDTO}}
-                <option value="{{id}}">{{categoryName}}</option>
-                    <p>noCategory: {{noCategory}}</p>
+                    <option value="{{id}}">{{categoryName}}</option>
                 {{/model.categoryNameDTO}}
             </select>
         </div>
+
         <input type="text" placeholder="Enter Title" name="title" class="form-control">
 
 
@@ -65,17 +65,18 @@
                 <button class="ql-clean"></button>
             </span>
         </div>
+        <!-- 퀼 에디터 디자인 부분-->
 
+        <!--textarea 내용적는 부분-->
         <div id="editor-container"></div>
-        <textarea name="content" id="content" class="my_hidden">
+        <textarea name="content" id="content" class="my_hidden"></textarea>
 
-        </textarea>
         <div class="form-control d-flex justify-content-end">
             <div>섬네일 사진 등록 : <input type="file" name="thumnailFile"></div>
         </div>
         <button type="submit" class="my_active_btn">글쓰기 등록</button>
     </form>
-    <br />
+    <br/>
 
 </div>
 
