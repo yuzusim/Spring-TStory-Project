@@ -19,17 +19,20 @@ public class PostResponse {
     @Data
     public static class ListDTO {
         private Integer id;
-        private String thumbnailFile; //섬네일
+        private String thumbnailFile; //썸네일
         private String title;
         private String content;
-        private LocalDateTime createdAt;
+        private String createdAt;
+
 
         public ListDTO(Integer id, String thumbnailFile, String title, String content, LocalDateTime createdAt) {
             this.id = id;
             this.thumbnailFile = thumbnailFile;
             this.title = title;
             this.content = content;
-            this.createdAt = createdAt;
+
+            // 여기서 바로 포맷팅 적용
+            this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
 

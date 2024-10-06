@@ -52,19 +52,6 @@
     </div>
 </div>
 
-<script>
-
-    // text-overflow에서 이미지 제외
-    let contentWrapper = $(".content-wrapper");
-    console.log("1 " + contentWrapper);
-
-    let contentHtml = contentWrapper.html();
-    console.log("2 " + contentHtml);
-
-    contentWrapper.html(contentHtml.replace(/<img[^>]+>/g, ''));
-    // text-overflow에서 이미지 제외 끝
-
-</script>
 
 
 {{>/layout/footer}}
