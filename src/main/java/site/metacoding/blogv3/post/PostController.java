@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import site.metacoding.blogv3.user.User;
@@ -35,6 +36,8 @@ public class PostController {
     public String postList(HttpServletRequest request) {
         User user = (User) session.getAttribute("sessionUser");
 
+        // 서비스 계층의 postService.postList() 메서드를 호출하여, 해당 사용자가 작성한 게시글 목록을 조회
+        // 현재 로그인한 사용자의 ID로 게시글을 필터링 함
         List<PostResponse.ListDTO> listDTOs = postService.postList(user.getId());
         request.setAttribute("model", listDTOs);
 
@@ -43,8 +46,11 @@ public class PostController {
 
     // 게시글 쓰기
     @PostMapping("/s/post/save")
-    public String save(PostRequest.SaveDTO reqDTO){
+    public String save(@ModelAttribute PostRequest.SaveDTO reqDTO){
         System.out.println("Post SaveDTO"+ reqDTO);
+
+        User user = (User) session.getAttribute("sessionUser");
+        postService.postSave(user.getId(), reqDTO);
 
         return "redirect:/post/list";
     }

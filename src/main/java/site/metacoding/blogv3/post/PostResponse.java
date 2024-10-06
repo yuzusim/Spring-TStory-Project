@@ -31,8 +31,8 @@ public class PostResponse {
             this.title = title;
             this.content = content;
 
-            // 여기서 바로 포맷팅 적용
-            this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            // 여기서 바로 포맷팅 적용 (분 까지)
+            this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         }
     }
 

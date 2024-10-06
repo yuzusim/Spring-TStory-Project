@@ -127,9 +127,6 @@
        let quillContent = quill.root.innerHTML;
        console.log("Quill Content: " + quillContent); // HTML 태그와 함께 텍스트 출력 (글꼴, 색상 등 유지)
 
-       // 폼을 제출하는 로직 (필요하다면)
-       // this.submit();
-
        // 폼 데이터 생성 (파일 및 텍스트 데이터 포함)
        let formData = new FormData(this); // 현재 폼의 데이터를 가져옴
        formData.append("content", quillContent); // Quill 에디터의 내용을 추가

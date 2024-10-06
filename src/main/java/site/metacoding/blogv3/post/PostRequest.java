@@ -15,6 +15,17 @@ public class PostRequest {
         private String content;
         private Integer categoryId;
         private MultipartFile thumbnailFile;
+
+        public Post toEntity(User sessionUser, Category category, String content, MultipartFile thumbnailFile){
+            String imgThumbnailFile = ImageUtil.save(thumbnailFile);
+            return Post.builder()
+                    .user(sessionUser)
+                    .title(title)
+                    .content(content)
+                    .category(category)
+                    .thumbnailFile(imgThumbnailFile)
+                    .build();
+        }
     }
 
 }

@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface PostJPARepository extends JpaRepository<Post, Integer> {
 
-    @Query("select p from Post p ORDER BY rand() limit 8")
-    List<Post> findAllRandom();
 
     // 게시글 리스트
     @Query("select new site.metacoding.blogv3.post.PostResponse$ListDTO(p.id, p.thumbnailFile, p.title, p.content, p.createdAt)" +
