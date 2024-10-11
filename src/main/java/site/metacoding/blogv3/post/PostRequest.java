@@ -17,7 +17,7 @@ public class PostRequest {
         private MultipartFile thumbnailFile;
 
         public Post toEntity(User sessionUser, Category category, String content, MultipartFile thumbnailFile){
-            String imgThumbnailFile = ImageUtil.save(thumbnailFile);
+            String imgThumbnailFile = ImageUtil.save(thumbnailFile); // 썸네일 파일 저장 후 파일 경로를 반환
             return Post.builder()
                     .user(sessionUser)
                     .title(title)

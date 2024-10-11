@@ -10,9 +10,25 @@ import java.util.stream.Collectors;
 
 public class PostResponse {
 
+    // 게시글 상세보기
     @Data
-    public static class Post {
+    public static class DetailDTO {
+        private Integer id;
+        private String title;
+        private String content;
+        private Integer userId;
+        private String username;
+        private String createdAt;
+        private Boolean isPostOwner;
 
+        public DetailDTO(Integer id, String title, String content, Integer userId, String username, LocalDateTime createdAt, Boolean isPostOwner) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.userId = userId;
+            this.username = username;
+            this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        }
     }
 
     // 게시글 리스트
