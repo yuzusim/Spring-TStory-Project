@@ -10,6 +10,7 @@ import site.metacoding.blogv3.category.CategoryResponse;
 import site.metacoding.blogv3.user.User;
 import site.metacoding.blogv3.user.UserJPARepository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,6 +19,105 @@ public class PostService {
     private final PostJPARepository postJPARepo;
     private final UserJPARepository userJPARepo;
     private final CategoryJPARepository categoryJPARepo;
+
+    // 게시글 상세보기
+//    public PostResponse.DetailDTO postDetail(Integer postId, User sessionUser){
+////        PostResponse.DetailDTO postDetail = postJPARepo.findByPostId(postId)
+//
+//        Post post = postJPARepo.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//        //System.out.println("postDetail = " + postDetail);
+//
+//
+//        PostResponse.DetailDTO detailDTO = new PostResponse.DetailDTO(post, sessionUser);
+//
+//        return detailDTO;
+//    }
+//
+//    public Post findByIdJoinUser(Integer postId, User sessionUser) {
+//        Post post = postJPARepo.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//
+//        Boolean isPostOwner = false;
+//        if (sessionUser != null) {
+//            if (sessionUser.getId() == post.getUser().getId()) {
+//                isPostOwner = true;
+//            }
+//        }
+//
+//        post.setIsPostOwner(isPostOwner);
+//        return post;
+//
+//    }
+
+//    public PostResponse.DetailDTO postDetail(Integer postId, User sessionUserId) {
+//
+//        PostResponse.DetailDTO postDetail = postJPARepo.findByPostId(postId)
+//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//        System.out.println("postDetail = " + postDetail);
+//
+//
+//
+//        Boolean isPostOwner = false;
+//        if (sessionUserId != null) {
+//            if (sessionUserId.getId() == postDetail.getUserId()) {
+//                isPostOwner = true;
+//            }
+//        }
+//
+//        postDetail.setIsPostOwner(isPostOwner);
+//
+//
+//        return postDetail;
+//
+//    }
+
+//    public PostResponse.DetailDTO postDetail(Integer postId, User sessionUser) {
+////        게시글 부분
+//        Post post = postJPARepo.findById(postId)
+//                .orElseThrow(() -> new Exception404("게시글이 존재하지 않습니다."));
+////        PostResponse.DetailDTO detailDTO = new PostResponse.DetailDTO(post, replies, sessionUser);
+//        PostResponse.DetailDTO detailDTO = new PostResponse.DetailDTO(post, sessionUser);
+//
+//        return detailDTO;
+//
+//    }
+
+    public PostResponse.DetailDTO postDetail(Integer postId, User sessionUser) {
+        Post post = postJPARepo.findByIdWithUser(postId)
+                .orElseThrow(() -> new Exception404("게시글이 존재하지 않습니다."));
+
+        PostResponse.DetailDTO detailDTO = new PostResponse.DetailDTO(post, sessionUser);
+
+        return detailDTO;
+    }
+
+//    public Post findByIdWithUser(Integer postId, User sessionUser) {
+//        Post post = postJPARepo.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//
+//        Boolean isPostOwner = false;
+//        if (sessionUser != null) {
+//            if (sessionUser.getId() == post.getUser().getId()) {
+//                isPostOwner = true;
+//            }
+//        }
+//
+//        post.setIsPostOwner(isPostOwner);
+//        return post;
+//
+//    }
+
+    // 게시글 리스트
+    public List<PostResponse.ListDTO> postList(Integer sessionUserId){
+        // postJPARepo.findByPostList(sessionUserId) 메서드를 호출하여,
+        // 데이터베이스에서 sessionUserId에 해당하는 사용자의 게시글 목록을 조회
+        List<PostResponse.ListDTO> postLists = postJPARepo.findByPostList(sessionUserId);
+        System.out.println("postLists"+ postLists);
+
+        return postLists;
+    }
+
 
     // 게시글 쓰기
     @Transactional
@@ -33,15 +133,6 @@ public class PostService {
 
         postJPARepo.save(reqDTO.toEntity(sessionUser, category, reqDTO.getContent(), reqDTO.getThumbnailFile()));
 
-    }
-
-    // 게시글 리스트
-    public List<PostResponse.ListDTO> postList(Integer sessionUserId){
-        // postJPARepo.findByPostList(sessionUserId) 메서드를 호출하여,
-        // 데이터베이스에서 sessionUserId에 해당하는 사용자의 게시글 목록을 조회
-        List<PostResponse.ListDTO> postLists = postJPARepo.findByPostList(sessionUserId);
-        System.out.println("postLists"+ postLists);
-        return postLists;
     }
 
     // 게시글 -> 카테고리 리스트

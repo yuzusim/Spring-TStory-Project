@@ -29,7 +29,7 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    private String thumbnailFile; //섬네일
+    private String thumbnailFile; //썸네일
 
     @Transient
     private Boolean isPostOwner;
