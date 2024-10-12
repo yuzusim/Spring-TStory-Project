@@ -26,61 +26,17 @@ public class PostController {
         return "main";
     }
 
-//    @GetMapping("/post/detail/{postId}")
-//    public String postDetail(@PathVariable Integer postId, HttpServletRequest request) {
-//        User user = (User) session.getAttribute("sessionUser");
-////        System.out.println("user = " + user);
-//
-//        PostResponse.DetailDTO postDetail = postService.postDetail(postId, user);
-//        request.setAttribute("model", postDetail);
-//
-//        return "post/detail";
-//    }
-
-//    @GetMapping("/post/detail/{postId}")
-//    public String postDetail(@PathVariable Integer postId, HttpServletRequest request) {
-//        User user = (User) session.getAttribute("sessionUser");
-//        PostResponse.DetailDTO postDetail = postService.postDetail(postId, user);
-//        request.setAttribute("model", postDetail); // DetailDTO를 설정
-//        return "post/detail";
-//    }
-
-//    @GetMapping("/post/detail/{postId}")
-//    public String postDetail(@PathVariable Integer postId, HttpServletRequest request) {
-//        User user = (User) session.getAttribute("sessionUser");
-//        PostResponse.DetailDTO postDetail = postService.postDetail(postId, user);
-//        System.out.println("Post Detail: " + postDetail); // 디버깅을 위한 로깅
-//
-//        request.setAttribute("postid", postId);
-//        request.setAttribute("model", postDetail);
-//        return "post/detail";
-//    }
-
-
+    // 게시글 상세보기
     @GetMapping("/post/detail/{postId}")
     public String postDetail(@PathVariable Integer postId, HttpServletRequest request) {
         User user = (User) session.getAttribute("sessionUser");
         PostResponse.DetailDTO postDetail = postService.postDetail(postId, user);
-        System.out.println("Post Detail: " + postDetail); // 디버깅을 위한 로깅
+        System.out.println("Post Detail: " + postDetail);
 
-        request.setAttribute("postid", postId); // postid 추가
-        request.setAttribute("model", postDetail); // postDetail 추가
+        request.setAttribute("model", postDetail);
 
-        return "post/detail"; // Mustache 템플릿 이름
+        return "post/detail";
     }
-
-    // 게시글 상세보기
-    // SSR은 DTO를 굳이 만들필요가 없다. 필요한 데이터만 랜더링해서 클라이언트에게 전달할것이니까!!
-//    @GetMapping("/post/detail/{id}")
-//    public String findByIdJoinUser(@PathVariable Integer id, HttpServletRequest request) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//        Post post = postService.findByIdWithUser(id, sessionUser);
-//
-//        request.setAttribute("model", post);
-//        return "post/detail";
-//    }
-
-
 
     // 게시글 리스트
     @GetMapping("/post/list")
@@ -94,7 +50,6 @@ public class PostController {
 
         return "post/list";
     }
-
 
     // 게시글 쓰기
     @PostMapping("/s/post/save")

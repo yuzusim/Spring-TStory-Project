@@ -32,12 +32,12 @@ public class PostResponse {
             this.createdAt = post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
             // 세션유저 받아서 isPostOwner 만듬
-//            isPostOwner = false;
-//            if (sessionUser != null) {
-//                if (sessionUser.getId() == post.getUser().getId()) {
-//                    isPostOwner = true;
-//                }
-//            }
+            isPostOwner = false;
+            if (sessionUser != null) {
+                if (sessionUser.getId() == post.getUser().getId()) {
+                    isPostOwner = true;
+                }
+            }
         }
 
 

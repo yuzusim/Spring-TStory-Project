@@ -15,12 +15,9 @@ public interface PostJPARepository extends JpaRepository<Post, Integer> {
             "from Post p where p.id = :postId")
     Optional<PostResponse.DetailDTO> findByPostId(Integer postId);
 
-//    @Query("select b from Post b join fetch b.user u where b.id = :id")
-//    Optional<Post> findByIdJoinUser(@Param("id") int id);
-
+    // 게시글 상세보기 (조인패치)
     @Query("SELECT p FROM Post p JOIN FETCH p.user WHERE p.id = :postId")
     Optional<Post> findByIdWithUser(@Param("postId") Integer postId);
-
 
 
     // 게시글 리스트
