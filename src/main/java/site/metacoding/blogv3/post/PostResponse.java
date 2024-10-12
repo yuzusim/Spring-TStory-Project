@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class PostResponse {
 
     // 게시글 상세보기
-    // 내부클래스로 만듬 모든걸 디티오로 옮기는 방식
+    // 내부클래스로 만듦, 모든걸 디티오로 옮기는 방식
     @Data
     public static class DetailDTO {
         private Integer postId;
@@ -39,7 +39,6 @@ public class PostResponse {
                 }
             }
         }
-
 
     }
 
