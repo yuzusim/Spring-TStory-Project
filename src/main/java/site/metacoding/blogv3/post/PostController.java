@@ -80,5 +80,14 @@ public class PostController {
         return "post/writeForm";
     }
 
+    @PostMapping("/post/delete/{postId}")
+    public String delete(@PathVariable Integer postId) {
+        User user = (User) session.getAttribute("sessionUser");
+        postService.delete(postId, user);
+
+        return "redirect:/post/list";
+    }
+
+
 
 }

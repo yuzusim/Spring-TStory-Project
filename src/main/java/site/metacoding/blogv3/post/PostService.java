@@ -20,6 +20,21 @@ public class PostService {
     private final UserJPARepository userJPARepo;
     private final CategoryJPARepository categoryJPARepo;
 
+    @Transactional
+    public void delete(Integer postId, User user) {
+        Post post = postJPARepo.findByIdWithUser(postId).orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+//        if (user.getId() != post.getUser().getId()) {
+//            throw new RuntimeException("게시글 삭제 권한이 없습니다.");
+//        }
+        if (!user.getId().equals(post.getUser().getId())) {
+            throw new RuntimeException("게시글 삭제 권한이 없습니다.");
+        }
+
+        postJPARepo.deleteById(postId);
+
+    }
+
     // 게시글 상세보기
     public PostResponse.DetailDTO postDetail(Integer postId, User sessionUser) {
         Post post = postJPARepo.findByIdWithUser(postId)
